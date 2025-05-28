@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CMS Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #238CCE;
+            --dark: #151515;
+            --light: #f8f9fa;
+            --sidebar: #1e1e1e;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Neue Haas Grotesk Display Pro','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            transition: all 0.3s;
+        }
+        
+        /* Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 8px 15px 8px 35px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            color: #777;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        /* Content Area */
+        .content {
+            padding: 25px;
+        }
+        
+        .page-title {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-title h2 {
+            font-weight: 500;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a7bb5;
+        }
+        
+        /* Dashboard Cards */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .card-value {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary);
+        }
+        
+        .bg-success {
+            background-color: var(--success);
+        }
+        
+        .bg-warning {
+            background-color: var(--warning);
+        }
+        
+        .bg-danger {
+            background-color: var(--danger);
+        }
+        
+        /* Table Styles */
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: #f9f9f9;
+            font-weight: 500;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-published {
+            background-color: #e6f7ee;
+            color: var(--success);
+        }
+        
+        .status-draft {
+            background-color: #fff8e6;
+            color: var(--warning);
+        }
+        
+        .action-btn {
+            padding: 5px 8px;
+            border-radius: 4px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        
+        .action-btn.edit {
+            color: var(--primary);
+        }
+        
+        .action-btn.delete {
+            color: var(--danger);
+        }
+        
+        .action-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Make cards clickable */
+        .card-container a.card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s;
+        }
+
+        .card-container a.card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-body {
+            text-align: center;
+        }
+
+        .modal-body i {
+            font-size: 48px;
+            color: var(--danger);
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .card-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header span, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .search-box {
+                width: 200px;
+            }
+            
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script>
+        fetch('http://localhost:3000/api/admin')
+          .then(response => response.json())
+          .then(data => {
+            console.log('Data admin:', data);
+            // tampilkan ke elemen HTML
+          })
+          .catch(error => console.error('Error:', error));
+
+        function showDeleteModal(portfolioId) {
+            document.getElementById('deletePortfolioId').value = portfolioId;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+    </script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <span>CMS Portfolio</span>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="/admin" class="menu-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/portfolio" class="menu-item">
+                <i class="fas fa-briefcase"></i>
+                <span>Portfolio</span>
+            </a>
+            <a href="/portfolio_categories" class="menu-item">
+                <i class="fas fa-briefcase"></i>
+                <span>Portfolio Categories</span>
+            </a>
+            <a href="/service" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Services</span>
+            </a>
+            <a href="/service_categories" class="menu-item">
+                <i class="fas fa-tags"></i>
+                <span>Service Categories</span>
+            </a>
+            <a href="/team_management" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Team</span>
+            </a>
+            <a href="/gallery" class="menu-item">
+                <i class="fas fa-image"></i>
+                <span>Gallery</span>
+            </a>
+            <a href="/testimonials" class="menu-item">
+                <i class="fas fa-quote-left"></i>
+                <span>Testimonials</span>
+            </a>
+            <a href="/user" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="/settings" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        {% include "includes/top_nav.html" %}
+        
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Stats Cards -->
+            <div class="card-container">
+                <a href="/portfolio" class="card">
+                    <div class="card-header">
+                        <div class="card-title">Total Portfolio</div>
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">{{ total_portfolio }}</div>
+                </a>
+                
+                <a href="/service" class="card">
+                    <div class="card-header">
+                        <div class="card-title">Total Services</div>
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">{{ total_services }}</div>
+                </a>
+                
+                <a href="/gallery" class="card">
+                    <div class="card-header">
+                        <div class="card-title">Media Files</div>
+                        <div class="card-icon bg-danger">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">{{ total_media }}</div>
+                </a>
+            </div>
+            
+            <!-- Recent Portfolio Table -->
+            <div class="table-container">
+                <div class="page-title">
+                    <h2>Recent Portfolio Items</h2>
+                    <a href="/portfolio" class="btn btn-primary">View All</a>
+                </div>                
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Client</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for portfolio in recent_portfolios %}
+                        <tr>
+                            <td>{{ portfolio.title }}</td>
+                            <td>{{ portfolio.client_name }}</td>
+                            <td>{{ portfolio.project_date.strftime('%Y-%m-%d') }}</td>
+                            <td>
+                                <span class="status status-{{ 'published' if portfolio.status == 1 else 'draft' }}">
+                                    {{ 'Published' if portfolio.status == 1 else 'Draft' }}
+                                </span>
+                            </td>
+                            <td>
+                                <button type="button" class="action-btn delete" onclick="showDeleteModal('{{ portfolio.id }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal delete-modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Are you sure you want to delete this portfolio item? This action cannot be undone.</p>
+                <form method="POST" action="{{ url_for('portfolio_management') }}" id="deleteForm">
+                    <input type="hidden" name="portfolio_id" id="deletePortfolioId">
+                    <input type="hidden" name="delete_portfolio" value="1">
+                    <div class="modal-footer">
+                        <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

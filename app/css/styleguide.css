@@ -1,0 +1,112 @@
+:root {
+  --colors-white: rgba(255, 255, 255, 1);
+  --text-font-family: "Neue Haas Grotesk Display Pro", Helvetica;
+  --text-font-weight: 400;
+  --text-font-size: 12px;
+  --text-letter-spacing: -1.2px;
+  --text-line-height: normal;
+  --text-font-style: normal;
+  --buttons-small-font-family: "DM Sans", Helvetica;
+  --buttons-small-font-weight: 500;
+  --buttons-small-font-size: 16px;
+  --buttons-small-letter-spacing: 0px;
+  --buttons-small-line-height: 22px;
+  --buttons-small-font-style: normal;
+  --size-space-050: 2px;
+  --size-space-200: 8px;
+}
+
+:root {
+    --text-font-family: "Neue Haas Grotesk Display Pro", Helvetica;
+    --text-font-weight: 400;
+    --text-font-size: 12px;
+    --text-letter-spacing: -1.2px;
+    --text-line-height: normal;
+    --text-font-style: normal;
+  }
+
+  :root {
+    --colors-white: rgba(255, 255, 255, 1);
+    --text-font-family: "Neue Haas Grotesk Display Pro", Helvetica;
+    --text-font-weight: 400;
+    --text-font-size: 12px;
+    --text-letter-spacing: -1.2px;
+    --text-line-height: normal;
+    --text-font-style: normal;
+    --buttons-small-font-family: "DM Sans", Helvetica;
+    --buttons-small-font-weight: 500;
+    --buttons-small-font-size: 16px;
+    --buttons-small-letter-spacing: 0px;
+    --buttons-small-line-height: 22px;
+    --buttons-small-font-style: normal;
+  }
+
+  :root {
+    --colors-white: rgba(255, 255, 255, 1);
+    --text-font-family: "Neue Haas Grotesk Display Pro", Helvetica;
+    --text-font-weight: 400;
+    --text-font-size: 12px;
+    --text-letter-spacing: -1.2px;
+    --text-line-height: normal;
+    --text-font-style: normal;
+    --buttons-small-font-family: "DM Sans", Helvetica;
+    --buttons-small-font-weight: 500;
+    --buttons-small-font-size: 16px;
+    --buttons-small-letter-spacing: 0px;
+    --buttons-small-line-height: 22px;
+    --buttons-small-font-style: normal;
+  }
+  :root {
+    --text-font-family: "Neue Haas Grotesk Display Pro", Helvetica;
+    --text-font-weight: 400;
+    --text-font-size: 12px;
+    --text-letter-spacing: -1.2px;
+    --text-line-height: normal;
+    --text-font-style: normal;
+    --heading-h5-lead-font-family: "DM Sans", Helvetica;
+    --heading-h5-lead-font-weight: 500;
+    --heading-h5-lead-font-size: 22px;
+    --heading-h5-lead-letter-spacing: 0px;
+    --heading-h5-lead-line-height: 32px;
+    --heading-h5-lead-font-style: normal;
+    --size-space-200: 8px;
+  }
+  :root {
+    --text-font-family: "Neue Haas Grotesk Display Pro", Helvetica;
+    --text-font-weight: 400;
+    --text-font-size: 12px;
+    --text-letter-spacing: -1.2px;
+    --text-line-height: normal;
+    --text-font-style: normal;
+    --text-label-font-family: "DM Sans", Helvetica;
+    --text-label-font-weight: 700;
+    --text-label-font-size: 14px;
+    --text-label-letter-spacing: 2px;
+    --text-label-line-height: 26px;
+    --text-label-font-style: normal;
+  }
+  :root {
+    --text-font-family: "Neue Haas Grotesk Display Pro", Helvetica;
+    --text-font-weight: 400;
+    --text-font-size: 12px;
+    --text-letter-spacing: -1.2px;
+    --text-line-height: normal;
+    --text-font-style: normal;
+  }
+  :root {
+    --text-font-family: "Neue Haas Grotesk Display Pro", Helvetica;
+    --text-font-weight: 400;
+    --text-font-size: 12px;
+    --text-letter-spacing: -1.2px;
+    --text-line-height: normal;
+    --text-font-style: normal;
+    --heading-h5-lead-font-family: "DM Sans", Helvetica;
+    --heading-h5-lead-font-weight: 500;
+    --heading-h5-lead-font-size: 22px;
+    --heading-h5-lead-letter-spacing: 0px;
+    --heading-h5-lead-line-height: 32px;
+    --heading-h5-lead-font-style: normal;
+    --size-space-200: 8px;
+  }
+          
+  

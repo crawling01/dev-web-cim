@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Management - CMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #238CCE;
+            --dark: #151515;
+            --light: #f8f9fa;
+            --sidebar: #1e1e1e;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar);
+            color: white;
+            height: 100vh;
+            position: fixed;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+        }
+        
+        /* Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        /* Content Area */
+        .content {
+            padding: 25px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a7bb5;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .portfolio-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .portfolio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .portfolio-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .portfolio-body {
+            padding: 15px;
+        }
+        
+        .portfolio-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .portfolio-client {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .portfolio-date {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .portfolio-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .published {
+            background-color: #e6f7ee;
+            color: var(--success);
+        }
+        
+        .draft {
+            background-color: #fff8e6;
+            color: var(--warning);
+        }
+        
+        .featured-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background-color: #e6f7ee;
+            color: #28a745;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 5px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .action-btn.edit {
+            background-color: #e7f3ff;
+            color: var(--primary);
+            margin-right: 8px;
+        }
+        
+        .action-btn.delete {
+            background-color: #fdecea;
+            color: var(--danger);
+        }
+        
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+        
+        /* Form Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        select.form-control {
+            height: 40px;
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            background-color: #f9f9f9;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary);
+            background-color: #f0f7ff;
+        }
+        
+        .file-upload i {
+            font-size: 24px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        .image-preview {
+            margin-top: 10px;
+        }
+        
+        .image-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Portfolio Detail Modal */
+        .portfolio-detail-modal .modal-content {
+            max-width: 800px;
+        }
+        
+        .portfolio-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .portfolio-detail-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .portfolio-detail-info {
+            margin-bottom: 15px;
+        }
+        
+        .portfolio-detail-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .portfolio-detail-value {
+            margin-bottom: 15px;
+        }
+        
+        /* Delete Confirmation Modal */
+        .delete-modal .modal-content {
+            max-width: 400px;
+        }
+        
+        .delete-modal .modal-body {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .delete-modal .modal-body i {
+            font-size: 50px;
+            color: var(--danger);
+            margin-bottom: 20px;
+        }
+        
+        .delete-modal .modal-body p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+
+        .flash-message {
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.3s ease-out forwards;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .flash-message.success {
+            background-color: #4CAF50;
+        }
+
+        .flash-message.error {
+            background-color: #F44336;
+        }
+
+        .flash-message.warning {
+            background-color: #FF9800;
+        }
+
+        .flash-message.info {
+            background-color: #2196F3;
+        }
+
+        .flash-message .close {
+            margin-left: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        /* Ensure this is in your CSS */
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            z-index: 1100;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.5s forwards;
+            border-left: 4px solid;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left-color: #ffc107;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-left-color: #17a2b8;
+        }
+
+        .alert .close-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 15px;
+            opacity: 0.7;
+        }
+
+        .alert .close-btn:hover {
+            opacity: 1;
+
+        }
+        /* Flash Messages */
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            z-index: 1100;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.5s forwards;
+            border-left: 4px solid;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left-color: #ffc107;
+        }
+        
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-left-color: #17a2b8;
+        }
+        
+        .alert .close-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 15px;
+            opacity: 0.7;
+        }
+        
+        .alert .close-btn:hover {
+            opacity: 1;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header span, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .portfolio-detail {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    <div class="alert-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <div style="display: flex; align-items: center;">
+                            <i class="fas 
+                                {% if category == 'success' %}fa-check-circle{% endif %}
+                                {% if category == 'danger' %}fa-exclamation-circle{% endif %}
+                                {% if category == 'warning' %}fa-exclamation-triangle{% endif %}
+                                {% if category == 'info' %}fa-info-circle{% endif %}
+                            "></i>
+                            <span class="message-content">{{ message }}</span>
+                        </div>
+                        <button type="button" class="close-btn" onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <!-- Flash Messages Container -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                        <span class="close" onclick="this.parentElement.style.animation='slideOut 0.3s ease-out forwards'; setTimeout(() => this.parentElement.remove(), 300)">&times;</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <span>CMS Portfolio</span>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="/admin" class="menu-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/portfolio" class="menu-item active">
+                <i class="fas fa-briefcase"></i>
+                <span>Portfolio</span>
+            </a>
+            <a href="/portfolio_categories" class="menu-item">
+                <i class="fas fa-tags"></i>
+                <span>Portfolio Categories</span>
+            </a>
+            <a href="/service" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Services</span>
+            </a>
+            <a href="/service_categories" class="menu-item">
+                <i class="fas fa-tags"></i>
+                <span>Service Categories</span>
+            </a>
+            <a href="/team_management" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Team</span>
+            </a>
+            <a href="/gallery" class="menu-item">
+                <i class="fas fa-image"></i>
+                <span>Gallery</span>
+            </a>
+            <a href="/testimonials" class="menu-item">
+                <i class="fas fa-quote-left"></i>
+                <span>Testimonials</span>
+            </a>
+            <a href="/user" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="/settings" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        {% include "includes/top_nav.html" %}
+        
+        <!-- Content Area -->
+        <div class="content">
+            <div class="page-header">
+                <h1 class="page-title">Portfolio Management</h1>
+                <button class="btn btn-primary" id="addPortfolioBtn" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i> Add Portfolio
+                </button>
+            </div>
+            
+            <!-- Portfolio Grid -->
+            <div class="portfolio-grid">
+                {% for portfolio in portfolios %}
+                <div class="portfolio-card" onclick="showPortfolioDetail('{{ portfolio.id }}')">
+                    <img src="{% if portfolio.cover_image %}{{ url_for('static', filename='uploads/' + portfolio.cover_image) }}{% else %}https://via.placeholder.com/400x300?text=No+Image{% endif %}" 
+                         alt="{{ portfolio.title }}" class="portfolio-image">
+                    <div class="portfolio-body">
+                        <h3 class="portfolio-title">{{ portfolio.title }}</h3>
+                        <p class="portfolio-client">Client: {{ portfolio.client_name }}</p>
+                        <p class="portfolio-date">Date: {{ portfolio.project_date.strftime('%Y-%m-%d') if portfolio.project_date else 'N/A' }}</p>
+                        <div class="portfolio-actions">
+                            <span class="status status-{{ 'published' if portfolio.status == 1 else 'draft' }}">
+                                {{ 'Published' if portfolio.status == 1 else 'Draft' }}
+                            </span>
+                            <div>
+                                <button class="action-btn edit" onclick="event.stopPropagation(); openEditModal('{{ portfolio.id }}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="action-btn delete" onclick="event.stopPropagation(); confirmDelete('{{ portfolio.id }}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add/Edit Portfolio Modal -->
+    <div class="modal" id="portfolioModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add New Portfolio</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="portfolioForm" enctype="multipart/form-data">
+                <input type="hidden" name="portfolio_id" id="modalPortfolioId">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="portfolioTitle">Project Title*</label>
+                        <input type="text" id="portfolioTitle" name="title" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolioClient">Client Name*</label>
+                        <input type="text" id="portfolioClient" name="client_name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolioDate">Project Date*</label>
+                        <input type="date" id="portfolioDate" name="project_date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolioCategory">Category</label>
+                        <select id="portfolioCategory" name="category_id" class="form-control">
+                            <option value="">Select Category</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolioDescription">Description*</label>
+                        <textarea id="portfolioDescription" name="description" class="form-control" rows="5" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolioIdea">Project Idea/Concept</label>
+                        <textarea id="portfolioIdea" name="idea" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Cover Image*</label>
+                        <div class="file-upload" id="coverImageUpload" onclick="document.getElementById('coverImage').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload cover image</p>
+                            <p style="font-size: 12px; color: #777;">Recommended size: 1200x800px (Max 2MB)</p>
+                            <input type="file" id="coverImage" name="cover_image" accept="image/jpeg, image/png" style="display: none;">
+                        </div>
+                        <div class="image-preview" id="coverImagePreview"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolioUrl">Project URL YouTube</label>
+                        <input type="url" id="portfolioUrl" name="project_url" class="form-control" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="portfolioUrlBehance">Project URL Behance</label>
+                        <input type="url" id="portfolioUrlBehance" name="project_url_behance" class="form-control" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div>
+                            <label class="radio-inline" style="margin-right: 15px;">
+                                <input type="radio" name="status" value="1" checked> Publish Now
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="status" value="0"> Save as Draft
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="is_featured" value="1"> Mark as Featured Project
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="savePortfolioBtn">Save Portfolio</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Portfolio Detail Modal -->
+    <div class="modal portfolio-detail-modal" id="portfolioDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="detailModalTitle">Portfolio Details</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="portfolioDetailContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal delete-modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Are you sure you want to delete this portfolio item? This action cannot be undone.</p>
+                <form id="deleteForm">
+                    <input type="hidden" name="portfolio_id" id="deletePortfolioId">
+                    <div class="modal-footer">
+                        <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showFlashMessage(type, message) {
+            const container = document.querySelector('.alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="close-btn" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(alert);
+            setTimeout(() => alert.remove(), 5000);
+        }
+
+        // Modal functions
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = 'Add New Portfolio';
+            document.getElementById('portfolioForm').reset();
+            document.getElementById('coverImagePreview').innerHTML = '';
+            document.getElementById('modalPortfolioId').value = '';
+            document.getElementById('portfolioModal').style.display = 'flex';
+        }
+
+        function openEditModal(portfolioId) {
+            fetch(`/portfolio/${portfolioId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load portfolio');
+                    return response.json();
+                })
+                .then(portfolio => {
+                    document.getElementById('modalTitle').textContent = 'Edit Portfolio';
+                    document.getElementById('modalPortfolioId').value = portfolio.id;
+                    document.getElementById('portfolioTitle').value = portfolio.title;
+                    document.getElementById('portfolioClient').value = portfolio.client_name;
+                    document.getElementById('portfolioDate').value = portfolio.project_date || '';
+                    document.getElementById('portfolioCategory').value = portfolio.category_id || '';
+                    document.getElementById('portfolioDescription').value = portfolio.description;
+                    document.getElementById('portfolioIdea').value = portfolio.idea || '';
+                    document.getElementById('portfolioUrl').value = portfolio.project_url || '';
+                    document.getElementById('portfolioUrlBehance').value = portfolio.project_url_behance || '';
+                    
+                    // Set status
+                    document.querySelector(`input[name="status"][value="${portfolio.status}"]`).checked = true;
+                    
+                    // Set featured
+                    document.querySelector('input[name="is_featured"]').checked = portfolio.is_featured == 1;
+                    
+                    // Set image preview
+                    const preview = document.getElementById('coverImagePreview');
+                    if (portfolio.cover_image) {
+                        preview.innerHTML = `
+                            <p>Current image:</p>
+                            <img src="/static/uploads/${portfolio.cover_image}" style="max-width: 150px;">
+                            <input type="hidden" name="current_cover_image" value="${portfolio.cover_image}">
+                        `;
+                    }
+                    
+                    document.getElementById('portfolioModal').style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showFlashMessage('danger', 'Failed to load portfolio data');
+                });
+        }
+
+        function showPortfolioDetail(portfolioId) {
+            fetch(`/portfolio/${portfolioId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load portfolio');
+                    return response.json();
+                })
+                .then(portfolio => {
+                    const content = document.getElementById('portfolioDetailContent');
+                    content.innerHTML = `
+                        <div class="portfolio-detail">
+                            <div>
+                                <img src="${portfolio.cover_image ? '/static/uploads/' + portfolio.cover_image : 'https://via.placeholder.com/800x500?text=No+Image'}" 
+                                     alt="${portfolio.title}" class="portfolio-detail-image">
+                                
+                                <div class="portfolio-detail-info">
+                                    <div class="portfolio-detail-label">Project URL</div>
+                                    <div class="portfolio-detail-value">
+                                        ${portfolio.project_url ? `<a href="${portfolio.project_url}" target="_blank">${portfolio.project_url}</a>` : 'N/A'}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="portfolio-detail-info">
+                                    <div class="portfolio-detail-label">Title</div>
+                                    <div class="portfolio-detail-value">${portfolio.title}</div>
+                                </div>
+                                
+                                <div class="portfolio-detail-info">
+                                    <div class="portfolio-detail-label">Client</div>
+                                    <div class="portfolio-detail-value">${portfolio.client_name}</div>
+                                </div>
+                                
+                                <div class="portfolio-detail-info">
+                                    <div class="portfolio-detail-label">Project Date</div>
+                                    <div class="portfolio-detail-value">${portfolio.project_date || 'N/A'}</div>
+                                </div>
+                                
+                                <div class="portfolio-detail-info">
+                                    <div class="portfolio-detail-label">Status</div>
+                                    <div class="portfolio-detail-value">
+                                        <span class="status-badge ${portfolio.status == 1 ? 'published' : 'draft'}">
+                                            ${portfolio.status == 1 ? 'Published' : 'Draft'}
+                                        </span>
+                                        ${portfolio.is_featured ? '<span class="featured-badge">Featured</span>' : ''}
+                                    </div>
+                                </div>
+                                
+                                <div class="portfolio-detail-info">
+                                    <div class="portfolio-detail-label">Description</div>
+                                    <div class="portfolio-detail-value">${portfolio.description.replace(/\n/g, '<br>')}</div>
+                                </div>
+                                
+                                ${portfolio.idea ? `
+                                <div class="portfolio-detail-info">
+                                    <div class="portfolio-detail-label">Idea/Concept</div>
+                                    <div class="portfolio-detail-value">${portfolio.idea.replace(/\n/g, '<br>')}</div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('detailModalTitle').textContent = portfolio.title;
+                    document.getElementById('portfolioDetailModal').style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showFlashMessage('danger', 'Failed to load portfolio details');
+                });
+        }
+
+        function confirmDelete(portfolioId) {
+            document.getElementById('deletePortfolioId').value = portfolioId;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+
+        // Event listeners
+        document.getElementById('coverImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Validate file type
+            if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                showFlashMessage('danger', 'Only JPG/PNG files allowed');
+                e.target.value = '';
+                return;
+            }
+            
+            // Validate size
+            if (file.size > 2 * 1024 * 1024) {
+                showFlashMessage('danger', 'File must be less than 2MB');
+                e.target.value = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('coverImagePreview').innerHTML = `
+                    <img src="${event.target.result}" style="max-width: 150px;">
+                `;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Modify your savePortfolioBtn click handler:
+        document.getElementById('savePortfolioBtn').addEventListener('click', function() {
+            const form = document.getElementById('portfolioForm');
+            const formData = new FormData(form);
+            const portfolioId = formData.get('portfolio_id');
+            
+            // Set AJAX request header
+            const headers = {
+                'X-Requested-With': 'XMLHttpRequest'
+            };
+            
+            if (portfolioId) {
+                // Update existing portfolio (PUT)
+                const jsonData = {};
+                formData.forEach((value, key) => {
+                    if (key !== 'cover_image') {
+                        jsonData[key] = value;
+                    }
+                });
+                
+                headers['Content-Type'] = 'application/json';
+                
+                fetch(`/portfolio/${portfolioId}`, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: JSON.stringify(jsonData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw err; });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showFlashMessage('success', data.message || 'Portfolio updated successfully');
+                    closeModal();
+                    setTimeout(() => window.location.reload(), 1000);
+                })
+                .catch(error => {
+                    showFlashMessage('danger', error.message || 'Failed to update portfolio');
+                });
+            } else {
+                // Create new portfolio (POST)
+                fetch('/portfolio', {
+                    method: 'POST',
+                    body: formData,
+                    headers: headers
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw err; });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showFlashMessage('success', data.message || 'Portfolio created successfully');
+                    closeModal();
+                    setTimeout(() => window.location.reload(), 1000);
+                })
+                .catch(error => {
+                    showFlashMessage('danger', error.message || 'Failed to create portfolio');
+                });
+            }
+        });
+
+        // Update your delete form handler:
+        document.getElementById('deleteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const portfolioId = document.getElementById('deletePortfolioId').value;
+            
+            fetch(`/portfolio/${portfolioId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err; });
+                }
+                return response.json();
+            })
+            .then(data => {
+                showFlashMessage('success', data.message || 'Portfolio deleted successfully');
+                closeModal();
+                setTimeout(() => window.location.reload(), 1000);
+            })
+            .catch(error => {
+                showFlashMessage('danger', error.message || 'Failed to delete portfolio');
+            });
+        });
+
+        
+        // Auto-hide flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(message => {
+                setTimeout(() => {
+                    message.style.animation = 'slideOut 0.3s ease-out forwards';
+                    setTimeout(() => message.remove(), 300);
+                }, 5000);
+            });
+        });
+
+        // Example for delete operation
+        function deletePortfolio(portfolioId) {
+            if (confirm('Are you sure you want to delete this portfolio?')) {
+                fetch(`/portfolio/${portfolioId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        // Reload the page to show the flash message
+                        window.location.reload();
+                    } else {
+                        console.error('Error:', data.error);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+        function showFlashMessage(type, message) {
+            const container = document.querySelector('.alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            
+            // Map types to icons
+            const icons = {
+                'success': 'fa-check-circle',
+                'danger': 'fa-exclamation-circle',
+                'warning': 'fa-exclamation-triangle',
+                'info': 'fa-info-circle'
+            };
+            
+            alert.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <i class="fas ${icons[type] || 'fa-info-circle'}"></i>
+                    <span class="message-content">${message}</span>
+                </div>
+                <button type="button" class="close-btn" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(alert);
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                alert.style.animation = 'slideOut 0.3s ease-out forwards';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

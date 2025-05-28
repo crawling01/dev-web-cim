@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link href="https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro" rel="stylesheet">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J8QGRPJHGD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-J8QGRPJHGD');
+      
+      // Track page views with enhanced measurement
+      gtag('config', 'G-J8QGRPJHGD', {
+        'page_title': document.title,
+        'page_location': window.location.href,
+        'page_path': window.location.pathname
+      });
+    </script>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
+        </style>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #238CCE;
+            --dark: #151515;
+            --light: #F4F4F4;
+            --text-light: rgba(255, 255, 255, 0.6);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Neue Haas Grotesk Display Pro', 'DM Sans', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        /* Navbar Container */
+        #navbar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 20px;
+        }
+        
+        .hero-title {
+            font-size: clamp(48px, 8vw, 110px);
+            font-weight: 600;
+            line-height: 86%;
+            margin-bottom: 40px;
+        }
+        
+        .hero-description {
+            font-size: clamp(16px, 2.5vw, 18px);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+            transition: all 0.5s ease;
+            padding: 0 20px;
+        }
+
+        /* Filter Buttons */
+        .service-filters {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+        
+        .filter-btn {
+            padding: 12px 22px;
+            border-radius: 36px;
+            border: 1px solid white;
+            font-size: 15px;
+            font-weight: 450;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: white;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(35, 140, 206, 0.2);
+        }
+        
+        .filter-btn.active {
+            background: #238CCE;
+            border-color: #238CCE;
+            font-weight: 500;
+        }
+
+        /* Service Sections - Updated for dynamic content */
+        .service-section {
+            padding: 60px 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .service-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .service-section.hidden {
+            display: none;
+        }
+        
+        .service-content {
+            max-width: 100%;
+            padding: 0 20px;
+        }
+        
+        .service-subtitle {
+            color: var(--text-light);
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .service-title {
+            color: var(--primary);
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        
+        .service-description {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .service-feature {
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .feature-icon {
+            color: var(--primary);
+            font-size: 20px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+        
+        .feature-content {
+            flex: 1;
+        }
+        
+        .feature-title {
+            font-size: 17px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+        
+        .service-images {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            padding: 0 20px;
+        }
+        
+        .service-image {
+            width: 100%;
+            max-width: 260px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s ease;
+            object-fit: cover;
+        }
+        
+        .image-left {
+            transform: rotate(-5deg);
+        }
+        
+        .image-right {
+            transform: rotate(5deg);
+        }
+        
+        .service-image:hover {
+            transform: rotate(0deg) scale(1.03);
+        }
+
+        .feature-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .feature-icon-row {
+            margin-bottom: 5px;
+        }
+
+        .feature-title {
+            font-size: 17px;
+            font-weight: 500;
+            margin-bottom: 0;
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 20px 30px;
+            background: var(--dark);
+            margin-top: 40px;
+            border-top: none;
+        }
+
+        /* Responsive Adjustments */
+        @media (min-width: 768px) {
+            .service-section {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 40px;
+                padding: 80px 0;
+            }
+            
+            .service-content {
+                width: 50%;
+                padding: 0;
+            }
+            
+            .service-images {
+                width: 45%;
+                padding: 0;
+            }
+            
+            .service-section.right-align .service-content {
+                order: 2;
+                text-align: right;
+            }
+            
+            .service-section.right-align .service-feature {
+                flex-direction: row-reverse;
+                text-align: right;
+            }
+            
+            .service-section.right-align .service-images {
+                order: 1;
+                justify-content: flex-start;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .service-images {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .service-image {
+                max-width: 100%;
+            }
+            
+            .image-left, .image-right {
+                transform: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 150px 20px 60px;
+            }
+            
+            .service-filters {
+                gap: 10px;
+            }
+            
+            .filter-btn {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+            
+            .service-section {
+                padding: 50px 0;
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 130px 15px 50px;
+            }
+            
+            .service-feature {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Transition overlay */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #238CCE;
+            z-index: 9999;
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        
+        .page-transition.active {
+            transform: scaleY(1);
+            transform-origin: top;
+        }
+
+        /* Animation for category filtering */
+        @keyframes itemsAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-items {
+            animation: itemsAppear 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div id="navbar-container"></div>
+    {% include "includes/navbar.html" %}
+    
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="hero-title">Our Finest<br>Expertise</h1>
+            <!-- Di bagian filter buttons -->
+            <div class="service-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                {% for category in categories %}
+                <button class="filter-btn" data-filter="{{ category.id }}">{{ category.name }}</button>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Services Grid -->
+        {% for service in services %}
+        <section class="service-section {% if loop.index % 2 == 0 %}right-align{% endif %}" data-category="{{ service.category_id }}">
+            <div class="service-content">
+                <span class="service-subtitle">Our Services</span>
+                <h2 class="service-title">{{ service.title }}</h2>
+                <p class="service-description">{{ service.full_description }}</p>
+                
+                <!-- Feature 1 -->
+                {% if service.nama_feature1 or service.text_feature1 %}
+                <div class="service-feature">
+                    <div class="feature-block">
+                        {% if service.icon_feature1 %}
+                        <div class="feature-icon-row">
+                            <i class="fa fa-{{ service.icon_feature1 }}" style="color: white; font-size: 20px;"></i>
+                        </div>
+                        {% endif %}
+                        {% if service.nama_feature1 %}
+                        <h3 class="feature-title">{{ service.nama_feature1 }}</h3>
+                        {% endif %}
+                        {% if service.text_feature1 %}
+                        <p class="feature-desc">{{ service.text_feature1 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Feature 2 -->
+                {% if service.nama_feature2 or service.text_feature2 %}
+                <div class="service-feature">
+                    <div class="feature-block">
+                        {% if service.icon2 %}
+                        <div class="feature-icon-row">
+                            <i class="fa fa-{{ service.icon2 }}" style="color: white; font-size: 20px;"></i>
+                        </div>
+                        {% endif %}
+                        {% if service.nama_feature2 %}
+                        <h3 class="feature-title">{{ service.nama_feature2 }}</h3>
+                        {% endif %}
+                        {% if service.text_feature2 %}
+                        <p class="feature-desc">{{ service.text_feature2 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="service-images">
+                {% if service.featured_image %}
+                <img class="service-image image-left" src="{{ url_for('static', filename='uploads/' + service.featured_image) }}" alt="{{ service.title }}">
+                {% else %}
+                <img class="service-image image-left" src="{{ url_for('static', filename='images/default-service.jpg') }}" alt="{{ service.title }}">
+                {% endif %}
+                
+                {% if service.detail_service_image %}
+                <img class="service-image image-right" src="{{ url_for('static', filename='uploads/' + service.detail_service_image) }}" alt="{{ service.title }} details">
+                {% else %}
+                <img class="service-image image-right" src="{{ url_for('static', filename='images/default-service-detail.jpg') }}" alt="{{ service.title }} details">
+                {% endif %}
+            </div>
+        </section>
+        {% endfor %}
+
+        <!-- Footer -->
+        <footer id="footer-container"></footer>
+        {% include "includes/footer.html" %}
+    </div>
+    <div class="page-transition"></div>
+<!-- Ganti bagian script dengan ini: -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const serviceSections = document.querySelectorAll('.service-section');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Get filter value (all atau category_id)
+                const filterValue = this.getAttribute('data-filter');
+                
+                // Filter sections
+                serviceSections.forEach((section, index) => {
+                    // Reset animation
+                    section.style.animation = 'none';
+                    void section.offsetHeight;
+                    
+                    // Get category_id dari section
+                    const sectionCategory = section.getAttribute('data-category');
+                    
+                    // Tampilkan jika 'all' atau category_id cocok
+                    if (filterValue === 'all' || sectionCategory === filterValue) {
+                        section.style.display = 'flex';
+                        section.style.animation = `itemsAppear 0.6s ease-out ${index * 0.1}s forwards`;
+                        section.classList.add('visible');
+                    } else {
+                        section.style.display = 'none';
+                        section.classList.remove('visible');
+                    }
+                });
+            });
+        });
+
+        // Inisialisasi awal
+        const transition = document.querySelector('.page-transition');
+        transition.classList.remove('active');
+        
+        serviceSections.forEach((item, index) => {
+            item.style.animationDelay = `${index * 0.1}s`;
+            item.style.animation = 'fadeInUp 0.6s forwards';
+            item.classList.add('visible');
+        });
+    });
+</script>
+    <script>
+    // Track scroll depth (25%, 50%, 75%, 100%)
+    document.addEventListener('DOMContentLoaded', function() {
+      const scrollThresholds = [25, 50, 75, 100];
+      const trackedThresholds = [];
+      
+      window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY || window.pageYOffset;
+        const pageHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercentage = Math.round((scrollPosition / pageHeight) * 100);
+        
+        scrollThresholds.forEach(threshold => {
+          if (scrollPercentage >= threshold && !trackedThresholds.includes(threshold)) {
+            trackedThresholds.push(threshold);
+            gtag('event', 'scroll_depth', {
+              'event_category': 'Engagement',
+              'event_label': 'About Us Page',
+              'value': threshold
+            });
+          }
+        });
+      });
+    });
+    </script>
+    <script src="{{ url_for('static', filename='js/transisi.js') }}"></script>
+</body>
+</html>

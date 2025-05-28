@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services Management - CMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #238CCE;
+            --dark: #151515;
+            --light: #f8f9fa;
+            --sidebar: #1e1e1e;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar);
+            color: white;
+            height: 100vh;
+            position: fixed;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+        }
+        
+        /* Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        /* Content Area */
+        .content {
+            padding: 25px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a7bb5;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover .service-image img {
+            transform: scale(1.05);
+        }
+
+        .feature-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .feature-section h4 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .service-icons {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .service-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            background-color: var(--primary);
+            border-radius: 50%;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+
+        
+        .service-body {
+            padding: 15px;
+            flex-grow: 1;
+        }
+        
+        .service-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .service-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .service-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .service-status {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        
+        .active-status {
+            background-color: #e6f7ee;
+            color: var(--success);
+        }
+        
+        .inactive-status {
+            background-color: #fdecea;
+            color: var(--danger);
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .action-btn.edit {
+            background-color: #e7f3ff;
+            color: var(--primary);
+        }
+        
+        .action-btn.delete {
+            background-color: #fdecea;
+            color: var(--danger);
+        }
+        
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+        
+        /* Alert Styles */
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            z-index: 1100;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.5s forwards;
+            border-left: 4px solid;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left-color: #ffc107;
+        }
+        
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-left-color: #17a2b8;
+        }
+        
+        .alert .close-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 15px;
+            opacity: 0.7;
+        }
+        
+        .alert .close-btn:hover {
+            opacity: 1;
+        }
+        /* Tambahkan di bagian CSS */
+        .text-muted {
+            color: #6c757d;
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        /* Form Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+
+        .feature-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .feature-section h4 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary);
+            background-color: #f0f8ff;
+        }
+        
+        .file-upload i {
+            font-size: 36px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .file-upload p {
+            margin: 5px 0;
+            color: #555;
+        }
+        
+        .file-upload .small {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        .file-upload.dragover {
+            border-color: var(--primary);
+            background-color: #e6f2ff;
+        }
+        
+        .image-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .remove-image {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-group input {
+            margin-right: 10px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Icon Picker */
+        .icon-picker {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+        
+        .icon-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .icon-option:hover {
+            background-color: #e7f3ff;
+        }
+        
+        .icon-option.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .icon-option i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .icon-option span {
+            font-size: 10px;
+            text-align: center;
+        }
+        
+        /* Delete Confirmation Modal */
+        .delete-modal .modal-content {
+            max-width: 400px;
+        }
+        
+        .delete-modal .modal-body {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .delete-modal .modal-body i {
+            font-size: 50px;
+            color: var(--danger);
+            margin-bottom: 20px;
+        }
+        
+        .delete-modal .modal-body p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        /* Service Detail Modal Styles */
+        .service-detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .service-detail-header .service-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            background-color: var(--primary);
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .service-detail-header h2 {
+            flex-grow: 1;
+            margin: 0;
+        }
+
+        .service-detail-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .service-images {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .service-image {
+            margin-bottom: 15px;
+        }
+
+        .service-image img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .service-info {
+            padding: 0 10px;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+        }
+
+        .info-group h3 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .info-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .meta-item h4 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .meta-item p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .info-seo {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .info-seo h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .service-detail-body {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header span, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .icon-picker {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .icon-picker {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    <div class="alert-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <div style="display: flex; align-items: center;">
+                            <i class="fas 
+                                {% if category == 'success' %}fa-check-circle{% endif %}
+                                {% if category == 'danger' %}fa-exclamation-circle{% endif %}
+                                {% if category == 'warning' %}fa-exclamation-triangle{% endif %}
+                                {% if category == 'info' %}fa-info-circle{% endif %}
+                            "></i>
+                            <span class="message-content">{{ message }}</span>
+                        </div>
+                        <button type="button" class="close-btn" onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <span>CMS Portfolio</span>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="/admin" class="menu-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/portfolio" class="menu-item">
+                <i class="fas fa-briefcase"></i>
+                <span>Portfolio</span>
+            </a>
+            <a href="/portfolio_categories" class="menu-item">
+                <i class="fas fa-tags"></i>
+                <span>Portfolio Categories</span>
+            </a>
+            <a href="/service" class="menu-item active">
+                <i class="fas fa-cog"></i>
+                <span>Services</span>
+            </a>
+            <a href="/service_categories" class="menu-item">
+                <i class="fas fa-tags"></i>
+                <span>Service Categories</span>
+            </a>
+            <a href="/team_management" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Team</span>
+            </a>
+            <a href="/gallery" class="menu-item">
+                <i class="fas fa-image"></i>
+                <span>Gallery</span>
+            </a>
+            <a href="/testimonials" class="menu-item">
+                <i class="fas fa-quote-left"></i>
+                <span>Testimonials</span>
+            </a>
+            <a href="/user" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="/settings" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        {% include "includes/top_nav.html" %}
+        
+        <!-- Content Area -->
+        <div class="content">
+            <div class="page-header">
+                <h1 class="page-title">Services Management</h1>
+                <button class="btn btn-primary" id="addServiceBtn">
+                    <i class="fas fa-plus"></i> Add Service
+                </button>
+            </div>
+            
+            <!-- Services Grid -->
+            <div class="services-grid" id="servicesContainer">
+                {% for service in services %}
+                <div class="service-card">
+                    <div class="service-image">
+                        {% if service.featured_image %}
+                        <img src="/static/uploads/{{ service.featured_image }}" alt="{{ service.title }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300x180?text=No+Image" alt="No Image">
+                        {% endif %}
+                        <div class="service-icon">
+                            <i class="{{ service.icon }}"></i>
+                        </div>
+                    </div>
+                    <div class="service-body">
+                        <h3 class="service-title">{{ service.title }}</h3>
+                        <p class="service-description">{{ service.short_description }}</p>
+                        <div class="service-actions">
+                            <span class="service-status {{ 'active-status' if service.is_active == 1 else 'inactive-status' }}">
+                                {{ 'Active' if service.is_active == 1 else 'Inactive' }}
+                            </span>
+                            <div>
+                                <button class="action-btn edit" data-id="{{ service.id }}">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="action-btn delete" data-id="{{ service.id }}">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add/Edit Service Modal -->
+    <div class="modal" id="serviceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add New Service</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="serviceForm" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="service_id" id="serviceId">
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="serviceTitle">Service Title *</label>
+                        <input type="text" id="serviceTitle" name="title" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="serviceSlug">Slug (URL Identifier) *</label>
+                        <input type="text" id="serviceSlug" name="slug" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="shortDescription">Short Description *</label>
+                        <textarea id="shortDescription" name="short_description" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="categorySelect">Category</label>
+                        <select name="category_id" id="categorySelect" class="form-control">
+                            <option value="">-- Select Category --</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Featured Image</label>
+                        <div class="file-upload" id="featuredImageUpload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop your image here or click to browse</p>
+                            <p class="small">Recommended size: 800x600px (JPG, PNG)</p>
+                            <input type="file" id="featuredImage" name="featured_image" accept="image/*">
+                        </div>
+                        <div class="image-preview" id="featuredImagePreview"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Detail Service Image</label>
+                        <div class="file-upload" id="detailServiceImageUpload">
+                            <i class="fas fa-images"></i>
+                            <p>Upload image for service details page</p>
+                            <p class="small">Recommended size: 1200x800px (JPG, PNG)</p>
+                            <input type="file" id="detailServiceImage" name="detail_service_image" accept="image/*">
+                        </div>
+                        <div class="image-preview" id="detailServiceImagePreview"></div>
+                    </div>
+                    <!-- Replace the existing form fields with these new ones -->
+                    <div class="form-group">
+                        <label for="fullDescription">Full Description *</label>
+                        <textarea id="fullDescription" name="full_description" class="form-control" required></textarea>
+                    </div>
+
+                    <!-- Feature 1 Section -->
+                    <div class="feature-section">
+                        <h4>Feature 1</h4>
+                        <div class="form-group">
+                            <label for="iconFeature1">Icon</label>
+                            <div class="form-control" id="selectedIconFeature1" style="display: flex; align-items: center; cursor: pointer;">
+                                <i id="iconPreviewFeature1" class="fas fa-cog" style="margin-right: 10px;"></i>
+                                <span id="iconNameFeature1">Select an icon</span>
+                            </div>
+                            <input type="hidden" name="icon_feature1" id="iconFeature1" value="fas fa-cog">
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label for="customIconInputFeature1">Or enter custom icon class:</label>
+                                <input type="text" id="customIconInputFeature1" class="form-control" placeholder="e.g. fas fa-home">
+                            </div>
+                            <div class="icon-picker" id="iconPickerFeature1"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="namaFeature1">Feature Name</label>
+                            <input type="text" id="namaFeature1" name="nama_feature1" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="textFeature1">Feature Description</label>
+                            <textarea id="textFeature1" name="text_feature1" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 Section -->
+                    <div class="feature-section">
+                        <h4>Feature 2</h4>
+                        <div class="form-group">
+                            <label for="iconFeature2">Icon</label>
+                            <div class="form-control" id="selectedIconFeature2" style="display: flex; align-items: center; cursor: pointer;">
+                                <i id="iconPreviewFeature2" class="fas fa-cog" style="margin-right: 10px;"></i>
+                                <span id="iconNameFeature2">Select an icon</span>
+                            </div>
+                            <input type="hidden" name="icon2" id="iconFeature2" value="fas fa-cog">
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label for="customIconInputFeature2">Or enter custom icon class:</label>
+                                <input type="text" id="customIconInputFeature2" class="form-control" placeholder="e.g. fas fa-home">
+                            </div>
+                            <div class="icon-picker" id="iconPickerFeature2"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="namaFeature2">Feature Name</label>
+                            <input type="text" id="namaFeature2" name="nama_feature2" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="textFeature2">Feature Description</label>
+                            <textarea id="textFeature2" name="text_feature2" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="displayOrder">Display Order</label>
+                        <input type="number" id="displayOrder" name="display_order" class="form-control" min="0" value="0">
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" name="is_active" id="isActive" value="1" checked>
+                            Active Service
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="metaTitle">Meta Title (SEO)</label>
+                        <input type="text" id="metaTitle" name="meta_title" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="metaDescription">Meta Description (SEO)</label>
+                        <textarea id="metaDescription" name="meta_description" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Service</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal delete-modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Are you sure you want to delete this service? This action cannot be undone.</p>
+                <form id="deleteServiceForm">
+                    <input type="hidden" name="service_id" id="deleteServiceId">
+                    <div class="modal-footer">
+                        <button type="button" class="btn" id="cancelDeleteBtn">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="detailModalTitle">Service Details</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body" id="detailContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Available icons for services
+        const availableIcons = [
+            'fa-code', 'fa-mobile-alt', 'fa-paint-brush', 'fa-bullhorn', 
+            'fa-shopping-cart', 'fa-chart-line', 'fa-camera', 'fa-video',
+            'fa-headphones', 'fa-music', 'fa-gamepad', 'fa-book',
+            'fa-graduation-cap', 'fa-briefcase', 'fa-wallet', 'fa-credit-card',
+            'fa-plane', 'fa-car', 'fa-home', 'fa-utensils',
+            'fa-heart', 'fa-hospital', 'fa-running', 'fa-dumbbell',
+            'fa-leaf', 'fa-tree', 'fa-robot', 'fa-microchip',
+            'fa-server', 'fa-database', 'fa-cloud', 'fa-globe'
+        ];
+
+        // DOM elements
+        const servicesContainer = document.getElementById('servicesContainer');
+        const serviceModal = document.getElementById('serviceModal');
+        const deleteModal = document.getElementById('deleteModal');
+        const detailModal = document.getElementById('detailModal');
+        const addBtn = document.getElementById('addServiceBtn');
+        const closeBtns = document.querySelectorAll('.close-btn');
+        const modalTitle = document.getElementById('modalTitle');
+        const serviceForm = document.getElementById('serviceForm');
+        const deleteServiceForm = document.getElementById('deleteServiceForm');
+
+        // Current service being edited/deleted
+        let currentServiceId = null;
+
+        // Initialize the page
+        function init() {
+            // Initialize icon pickers for both features
+            populateIconPicker('iconPickerFeature1', availableIcons);
+            populateIconPicker('iconPickerFeature2', availableIcons);
+            setupEventListeners();
+            autoCloseAlerts();
+        }
+
+        // Show flash message
+        function showFlashMessage(type, message) {
+            const container = document.querySelector('.alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="close-btn" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(alert);
+            setTimeout(() => alert.remove(), 5000);
+        }
+
+        // Auto-close flash messages after 5 seconds
+        function autoCloseAlerts() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.transition = 'opacity 0.5s';
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 500);
+                }, 5000);
+            });
+        }
+
+        // Populate the icon picker with available icons
+        function populateIconPicker(pickerId, icons) {
+            const iconPicker = document.getElementById(pickerId);
+            iconPicker.innerHTML = '';
+            
+            icons.forEach(icon => {
+                const iconOption = document.createElement('div');
+                iconOption.className = 'icon-option';
+                iconOption.innerHTML = `
+                    <i class="fas ${icon}"></i>
+                    <span>${icon.replace('fa-', '')}</span>
+                `;
+                
+                iconOption.addEventListener('click', () => {
+                    const featureNum = pickerId.replace('iconPickerFeature', '');
+                    
+                    // Remove selected class from all options in this picker
+                    document.querySelectorAll(`#${pickerId} .icon-option`).forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    iconOption.classList.add('selected');
+                    
+                    // Update selected icon preview
+                    const selectedIcon = `fas ${icon}`;
+                    document.getElementById(`iconPreviewFeature${featureNum}`).className = selectedIcon;
+                    document.getElementById(`iconNameFeature${featureNum}`).textContent = icon.replace('fa-', '');
+                    document.getElementById(`iconFeature${featureNum}`).value = selectedIcon;
+                    
+                    // Clear custom input
+                    document.getElementById(`customIconInputFeature${featureNum}`).value = '';
+                });
+                
+                iconPicker.appendChild(iconOption);
+            });
+        }
+
+        function closeModal() {
+            serviceModal.style.display = 'none';
+            deleteModal.style.display = 'none';
+            detailModal.style.display = 'none';
+            
+            // Hide all icon pickers
+            document.getElementById('iconPickerFeature1').style.display = 'none';
+            document.getElementById('iconPickerFeature2').style.display = 'none';
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Add service button
+            addBtn.addEventListener('click', openAddModal);
+
+            // Edit service buttons (delegated)
+            servicesContainer.addEventListener('click', (e) => {
+                if (e.target.closest('.edit')) {
+                    const serviceId = e.target.closest('.edit').getAttribute('data-id');
+                    fetchServiceData(serviceId);
+                }
+                
+                if (e.target.closest('.delete')) {
+                    const serviceId = e.target.closest('.delete').getAttribute('data-id');
+                    confirmDelete(serviceId);
+                }
+                
+                if (e.target.closest('.service-card') && !e.target.closest('.action-btn')) {
+                    const serviceId = e.target.closest('.service-card').getAttribute('data-id') || 
+                                    e.target.closest('.service-card').querySelector('.edit').getAttribute('data-id');
+                    showServiceDetail(serviceId);
+                }
+            });
+
+            // Close modal buttons
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
+            
+            window.addEventListener('click', (e) => {
+                if (e.target === serviceModal || e.target === deleteModal || e.target === detailModal) {
+                    closeModal();
+                }
+            });
+
+            // File upload handlers with drag and drop
+            setupFileUpload('featuredImage', 'featuredImageUpload', 'featuredImagePreview');
+            setupFileUpload('detailServiceImage', 'detailServiceImageUpload', 'detailServiceImagePreview');
+
+            // Feature 1 icon selection
+            document.getElementById('selectedIconFeature1').addEventListener('click', () => {
+                const picker = document.getElementById('iconPickerFeature1');
+                picker.style.display = picker.style.display === 'grid' ? 'none' : 'grid';
+            });
+            
+            // Feature 2 icon selection
+            document.getElementById('selectedIconFeature2').addEventListener('click', () => {
+                const picker = document.getElementById('iconPickerFeature2');
+                picker.style.display = picker.style.display === 'grid' ? 'none' : 'grid';
+            });
+            
+            // Feature 1 custom icon input
+            document.getElementById('customIconInputFeature1').addEventListener('change', function() {
+                const customIcon = this.value.trim();
+                if (customIcon) {
+                    document.getElementById('iconPreviewFeature1').className = customIcon;
+                    document.getElementById('iconNameFeature1').textContent = 'Custom icon';
+                    document.getElementById('iconFeature1').value = customIcon;
+                    
+                    // Remove selected class from all icon options
+                    document.querySelectorAll('#iconPickerFeature1 .icon-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                }
+            });
+            
+            // Feature 2 custom icon input
+            document.getElementById('customIconInputFeature2').addEventListener('change', function() {
+                const customIcon = this.value.trim();
+                if (customIcon) {
+                    document.getElementById('iconPreviewFeature2').className = customIcon;
+                    document.getElementById('iconNameFeature2').textContent = 'Custom icon';
+                    document.getElementById('iconFeature2').value = customIcon;
+                    
+                    // Remove selected class from all icon options
+                    document.querySelectorAll('#iconPickerFeature2 .icon-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                }
+            });
+
+            // Form submission
+            serviceForm.addEventListener('submit', handleFormSubmit);
+            deleteServiceForm.addEventListener('submit', handleDelete);
+
+            // Dalam fungsi setupEventListeners()
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            document.getElementById('cancelDeleteBtn').addEventListener('click', closeModal);
+
+        }
+
+        // Open add modal
+        function openAddModal() {
+            currentServiceId = null;
+            modalTitle.textContent = 'Add New Service';
+            serviceForm.reset();
+            
+            // Reset form fields
+            document.getElementById('serviceId').value = '';
+            document.getElementById('featuredImagePreview').innerHTML = '';
+            document.getElementById('detailServiceImagePreview').innerHTML = '';
+            
+            // Reset feature 1
+            document.getElementById('iconPreviewFeature1').className = 'fas fa-cog';
+            document.getElementById('iconNameFeature1').textContent = 'Select an icon';
+            document.getElementById('iconFeature1').value = 'fas fa-cog';
+            document.getElementById('customIconInputFeature1').value = '';
+            document.querySelectorAll('#iconPickerFeature1 .icon-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Reset feature 2
+            document.getElementById('iconPreviewFeature2').className = 'fas fa-cog';
+            document.getElementById('iconNameFeature2').textContent = 'Select an icon';
+            document.getElementById('iconFeature2').value = 'fas fa-cog';
+            document.getElementById('customIconInputFeature2').value = '';
+            document.querySelectorAll('#iconPickerFeature2 .icon-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            document.getElementById('isActive').checked = true;
+            serviceModal.style.display = 'flex';
+        }
+
+        // Setup file upload with drag and drop
+        function setupFileUpload(inputId, uploadDivId, previewDivId) {
+            const fileInput = document.getElementById(inputId);
+            const uploadDiv = document.getElementById(uploadDivId);
+            const previewDiv = document.getElementById(previewDivId);
+
+            // Click to select files
+            uploadDiv.addEventListener('click', () => fileInput.click());
+
+            // Handle file selection
+            fileInput.addEventListener('change', (e) => handleFileSelect(e, previewDiv));
+
+            // Drag and drop events
+            uploadDiv.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadDiv.classList.add('dragover');
+            });
+
+            uploadDiv.addEventListener('dragleave', () => {
+                uploadDiv.classList.remove('dragover');
+            });
+
+            uploadDiv.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadDiv.classList.remove('dragover');
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileSelect(e, previewDiv);
+                }
+            });
+        }
+
+        // Handle file selection and preview
+        function handleFileSelect(event, previewDiv) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Check file type
+            if (!file.type.match('image.*')) {
+                showFlashMessage('danger', 'Please select an image file (JPEG, PNG)');
+                return;
+            }
+
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showFlashMessage('danger', 'Image size should be less than 5MB');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewDiv.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview">
+                    <div class="remove-image" onclick="removeImage(this, '${event.target.id}')">
+                        <i class="fas fa-trash"></i> Remove Image
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Remove image and reset input
+        function removeImage(element, inputId) {
+            const previewDiv = element.parentElement;
+            previewDiv.innerHTML = '';
+            document.getElementById(inputId).value = '';
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(serviceForm);
+            const serviceId = formData.get('service_id');
+            
+            // For both POST and PUT, we'll use FormData
+            const url = serviceId ? `/service/${serviceId}` : '/service';
+            const method = serviceId ? 'PUT' : 'POST';
+            
+            fetch(url, {
+                method: method,
+                body: formData,
+                headers: {
+                    // Don't set Content-Type - let the browser set it with boundary
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Request failed');
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    showFlashMessage('success', data.message);
+                    closeModal();
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    throw new Error(data.message || 'Unknown error');
+                }
+            })
+            .catch(error => {
+                showFlashMessage('danger', error.message);
+            });
+        }
+
+        // Confirm delete action
+        function confirmDelete(serviceId) {
+            document.getElementById('deleteServiceId').value = serviceId;
+            deleteModal.style.display = 'flex';
+        }
+
+        // Handle delete
+        function handleDelete(e) {
+            e.preventDefault();
+            const serviceId = document.getElementById('deleteServiceId').value;
+            
+            fetch(`/service/${serviceId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Delete failed');
+                return response.json();
+            })
+            .then(data => {
+                showFlashMessage('success', data.message || 'Service deleted successfully');
+                closeModal();
+                setTimeout(() => window.location.reload(), 1000);
+            })
+            .catch(error => {
+                showFlashMessage('danger', error.message);
+            });
+        }
+
+        // Fetch service data for editing
+        function fetchServiceData(serviceId) {
+            fetch(`/service/${serviceId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load service');
+                    return response.json();
+                })
+                .then(data => {
+                    currentServiceId = data.id;
+                    modalTitle.textContent = 'Edit Service';
+                    
+                    // Set basic fields
+                    document.getElementById('serviceId').value = data.id;
+                    document.getElementById('serviceTitle').value = data.title;
+                    document.getElementById('serviceSlug').value = data.slug;
+                    document.getElementById('shortDescription').value = data.short_description;
+                    document.getElementById('fullDescription').value = data.full_description;
+                    document.getElementById('displayOrder').value = data.display_order;
+                    document.getElementById('isActive').checked = data.is_active == 1;
+                    document.getElementById('metaTitle').value = data.meta_title || '';
+                    document.getElementById('metaDescription').value = data.meta_description || '';
+                    
+                    // Set category
+                    if (data.category_id) {
+                        document.getElementById('categorySelect').value = data.category_id;
+                    }
+                    
+                    // Set feature 1 data
+                    document.getElementById('namaFeature1').value = data.nama_feature1 || '';
+                    document.getElementById('textFeature1').value = data.text_feature1 || '';
+                    
+                    // Set feature 1 icon
+                    const iconFeature1 = data.icon_feature1 || 'fas fa-cog';
+                    document.getElementById('iconPreviewFeature1').className = iconFeature1;
+                    document.getElementById('iconFeature1').value = iconFeature1;
+                    
+                    const isCustomIcon1 = !availableIcons.some(icon => iconFeature1 === `fas ${icon}`);
+                    if (isCustomIcon1) {
+                        document.getElementById('iconNameFeature1').textContent = 'Custom icon';
+                        document.getElementById('customIconInputFeature1').value = iconFeature1;
+                    } else {
+                        document.getElementById('iconNameFeature1').textContent = iconFeature1.replace('fas fa-', '');
+                        document.getElementById('customIconInputFeature1').value = '';
+                        
+                        // Select the corresponding icon in the picker
+                        document.querySelectorAll('#iconPickerFeature1 .icon-option').forEach(opt => {
+                            if (opt.querySelector('i').className === iconFeature1) {
+                                opt.classList.add('selected');
+                            } else {
+                                opt.classList.remove('selected');
+                            }
+                        });
+                    }
+                    
+                    // Set feature 2 data
+                    document.getElementById('namaFeature2').value = data.nama_feature2 || '';
+                    document.getElementById('textFeature2').value = data.text_feature2 || '';
+                    
+                    // Set feature 2 icon
+                    const iconFeature2 = data.icon2 || 'fas fa-cog';
+                    document.getElementById('iconPreviewFeature2').className = iconFeature2;
+                    document.getElementById('iconFeature2').value = iconFeature2;
+                    
+                    const isCustomIcon2 = !availableIcons.some(icon => iconFeature2 === `fas ${icon}`);
+                    if (isCustomIcon2) {
+                        document.getElementById('iconNameFeature2').textContent = 'Custom icon';
+                        document.getElementById('customIconInputFeature2').value = iconFeature2;
+                    } else {
+                        document.getElementById('iconNameFeature2').textContent = iconFeature2.replace('fas fa-', '');
+                        document.getElementById('customIconInputFeature2').value = '';
+                        
+                        // Select the corresponding icon in the picker
+                        document.querySelectorAll('#iconPickerFeature2 .icon-option').forEach(opt => {
+                            if (opt.querySelector('i').className === iconFeature2) {
+                                opt.classList.add('selected');
+                            } else {
+                                opt.classList.remove('selected');
+                            }
+                        });
+                    }
+                    
+                    // Show featured image preview if exists
+                    const featuredPreview = document.getElementById('featuredImagePreview');
+                    if (data.featured_image) {
+                        featuredPreview.innerHTML = `
+                            <img src="/static/uploads/${data.featured_image}" alt="Current Featured Image">
+                            <div class="remove-image" onclick="removeImage(this, 'featuredImage')">
+                                <i class="fas fa-trash"></i> Remove Image
+                            </div>
+                        `;
+                    }
+                    
+                    // Show detail service image preview if exists
+                    const detailPreview = document.getElementById('detailServiceImagePreview');
+                    if (data.detail_service_image) {
+                        detailPreview.innerHTML = `
+                            <img src="/static/uploads/${data.detail_service_image}" alt="Current Detail Image">
+                            <div class="remove-image" onclick="removeImage(this, 'detailServiceImage')">
+                                <i class="fas fa-trash"></i> Remove Image
+                            </div>
+                        `;
+                    }
+                    
+                    serviceModal.style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showFlashMessage('danger', 'Failed to fetch service data');
+                });
+        }
+
+        // Show service detail
+        function showServiceDetail(serviceId) {
+            fetch(`/service/${serviceId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load service');
+                    return response.json();
+                })
+                .then(data => {
+                    const detailContent = document.getElementById('detailContent');
+                    detailContent.innerHTML = `
+                        <div class="service-detail-header">
+                            <div class="service-icon">
+                                <i class="${data.icon_feature1 || 'fas fa-cog'}"></i>
+                            </div>
+                            <h2>${data.title}</h2>
+                            <span class="service-status ${data.is_active ? 'active-status' : 'inactive-status'}">
+                                ${data.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                        </div>
+                        
+                        <div class="service-detail-body">
+                            <div class="service-images">
+                                <div class="service-image">
+                                    <h3>Featured Image</h3>
+                                    <img src="${data.featured_image ? '/static/uploads/' + data.featured_image : 'https://via.placeholder.com/800x600?text=No+Image'}" 
+                                        alt="${data.title}">
+                                </div>
+                                <div class="service-image">
+                                    <h3>Detail Image</h3>
+                                    <img src="${data.detail_service_image ? '/static/uploads/' + data.detail_service_image : 'https://via.placeholder.com/1200x800?text=No+Image'}" 
+                                        alt="${data.title}">
+                                </div>
+                            </div>
+                            
+                            <div class="service-info">
+                                <div class="info-group">
+                                    <h3>Short Description</h3>
+                                    <p>${data.short_description}</p>
+                                </div>
+                                
+                                <div class="info-group">
+                                    <h3>Full Description</h3>
+                                    <p>${data.full_description.replace(/\n/g, '<br>')}</p>
+                                </div>
+                                
+                                <!-- Feature 1 Section -->
+                                ${data.nama_feature1 || data.text_feature1 ? `
+                                <div class="info-group">
+                                    <h3>${data.nama_feature1 || 'Feature 1'}</h3>
+                                    <div class="service-feature">
+                                        <i class="${data.icon_feature1 || 'fas fa-cog'} feature-icon"></i>
+                                        <div class="feature-content">
+                                            <p class="feature-desc">${data.text_feature1 || ''}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                
+                                <!-- Feature 2 Section -->
+                                ${data.nama_feature2 || data.text_feature2 ? `
+                                <div class="info-group">
+                                    <h3>${data.nama_feature2 || 'Feature 2'}</h3>
+                                    <div class="service-feature">
+                                        <i class="${data.icon2 || 'fas fa-cog'} feature-icon"></i>
+                                        <div class="feature-content">
+                                            <p class="feature-desc">${data.text_feature2 || ''}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                
+                                <div class="info-meta">
+                                    <div class="meta-item">
+                                        <h4>Category:</h4>
+                                        <p>${data.category_name || 'None'}</p>
+                                    </div>
+                                    <div class="meta-item">
+                                        <h4>Display Order:</h4>
+                                        <p>${data.display_order}</p>
+                                    </div>
+                                    <div class="meta-item">
+                                        <h4>Created At:</h4>
+                                        <p>${data.created_at || 'N/A'}</p>
+                                    </div>
+                                    <div class="meta-item">
+                                        <h4>Created By:</h4>
+                                        <p>${data.username || 'Unknown'}</p>
+                                    </div>
+                                </div>
+                                
+                                ${data.meta_title || data.meta_description ? `
+                                <div class="info-seo">
+                                    <h3>SEO Information</h3>
+                                    ${data.meta_title ? `<p><strong>Meta Title:</strong> ${data.meta_title}</p>` : ''}
+                                    ${data.meta_description ? `<p><strong>Meta Description:</strong> ${data.meta_description}</p>` : ''}
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('detailModalTitle').textContent = data.title;
+                    detailModal.style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showFlashMessage('danger', 'Failed to load service details');
+                });
+        }
+
+        // Close modal
+        function closeModal() {
+            serviceModal.style.display = 'none';
+            deleteModal.style.display = 'none';
+            detailModal.style.display = 'none';
+            
+            // Hide all icon pickers
+            document.getElementById('iconPickerFeature1').style.display = 'none';
+            document.getElementById('iconPickerFeature2').style.display = 'none';
+        }
+
+        // Initialize the application
+        init();
+    </script>
+</body>
+</html>

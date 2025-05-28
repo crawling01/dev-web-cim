@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Categories - CMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #238CCE;
+            --dark: #151515;
+            --light: #f8f9fa;
+            --sidebar: #1e1e1e;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar);
+            color: white;
+            height: 100vh;
+            position: fixed;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+        }
+        
+        /* Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        /* Content Area */
+        .content {
+            padding: 25px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a7bb5;
+        }
+        
+        /* Table Styles */
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-edit {
+            background-color: #e7f3ff;
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .btn-delete {
+            background-color: #fdecea;
+            color: var(--danger);
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Delete Confirmation Modal */
+        .delete-modal .modal-content {
+            max-width: 400px;
+        }
+        
+        .delete-modal .modal-body {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .delete-modal .modal-body i {
+            font-size: 50px;
+            color: var(--danger);
+            margin-bottom: 20px;
+        }
+        
+        .delete-modal .modal-body p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        /* Alert Styles */
+        .alert {
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .alert .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header span, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="alert-container" class="alert-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <div style="display: flex; align-items: center;">
+                            <i class="fas 
+                                {% if category == 'success' %}fa-check-circle{% endif %}
+                                {% if category == 'danger' %}fa-exclamation-circle{% endif %}
+                                {% if category == 'warning' %}fa-exclamation-triangle{% endif %}
+                                {% if category == 'info' %}fa-info-circle{% endif %}
+                            "></i>
+                            <span style="margin-left: 10px;">{{ message }}</span>
+                        </div>
+                        <button type="button" class="close-btn" onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <span>CMS Portfolio</span>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="/admin" class="menu-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/portfolio" class="menu-item">
+                <i class="fas fa-briefcase"></i>
+                <span>Portfolio</span>
+            </a>
+            <a href="/portfolio_categories" class="menu-item">
+                <i class="fas fa-tags"></i>
+                <span>Portfolio Categories</span>
+            </a>
+            <a href="/service" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Services</span>
+            </a>
+            <a href="/service_categories" class="menu-item active">
+                <i class="fas fa-tags"></i>
+                <span>Service Categories</span>
+            </a>
+            <a href="/team_management" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Team</span>
+            </a>
+            <a href="/gallery" class="menu-item">
+                <i class="fas fa-image"></i>
+                <span>Gallery</span>
+            </a>
+            <a href="/testimonials" class="menu-item">
+                <i class="fas fa-quote-left"></i>
+                <span>Testimonials</span>
+            </a>
+            <a href="/user" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="/settings" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        {% include "includes/top_nav.html" %}
+        
+        <!-- Content Area -->
+        <div class="content">
+            <div class="page-header">
+                <h1 class="page-title">Service Categories</h1>
+                <button class="btn btn-primary" id="addCategoryBtn">
+                    <i class="fas fa-plus"></i> Add Category
+                </button>
+            </div>
+            
+            <!-- Categories Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.slug }}</td>
+                            <td>{{ category.description|truncate(50) if category.description else '' }}</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-edit edit-category" data-id="{{ category.id }}">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn-delete delete-category" data-id="{{ category.id }}">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add/Edit Category Modal -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add New Category</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="categoryForm" method="POST" action="/service_categories">
+                <input type="hidden" name="category_id" id="categoryId">
+                <input type="hidden" name="add_category" id="addCategory" value="1">
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="categoryName">Name *</label>
+                        <input type="text" id="categoryName" name="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categorySlug">Slug *</label>
+                        <input type="text" id="categorySlug" name="slug" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categoryDescription">Description</label>
+                        <textarea id="categoryDescription" name="description" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" name="submit">Save Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal delete-modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Delete</h3>
+                <button class="close-btn" id="closeDeleteModal">&times;</button>
+            </div>
+            <form id="deleteForm" method="POST" action="/service_categories">
+                <input type="hidden" name="category_id" id="deleteCategoryId">
+                <input type="hidden" name="delete_category" value="1">
+                <div class="modal-body">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Are you sure you want to delete this category? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" id="cancelDeleteBtn">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const addBtn = document.getElementById('addCategoryBtn');
+        const categoryModal = document.getElementById('categoryModal');
+        const deleteModal = document.getElementById('deleteModal');
+        const closeBtn = document.getElementById('closeModal');
+        const closeDeleteBtn = document.getElementById('closeDeleteModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        const categoryForm = document.getElementById('categoryForm');
+        const deleteForm = document.getElementById('deleteForm');
+        const alertContainer = document.getElementById('alertContainer');
+        
+        // Initialize the page
+        function init() {
+            setupEventListeners();
+            // Tampilkan flash messages dari Flask (jika ada)
+            displayFlaskFlashMessages();
+            autoCloseAlerts();
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            // Add category button
+            addBtn.addEventListener('click', () => {
+                modalTitle.textContent = 'Add New Category';
+                categoryForm.reset();
+                document.getElementById('addCategory').value = '1';
+                document.getElementById('categoryId').value = '';
+                categoryModal.style.display = 'flex';
+            });
+            
+            // Edit category buttons
+            document.querySelectorAll('.edit-category').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const categoryId = btn.getAttribute('data-id');
+                    fetchCategoryData(categoryId);
+                });
+            });
+            
+            // Delete category buttons
+            document.querySelectorAll('.delete-category').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const categoryId = btn.getAttribute('data-id');
+                    document.getElementById('deleteCategoryId').value = categoryId;
+                    deleteModal.style.display = 'flex';
+                });
+            });
+            
+            // Close modal buttons
+            closeBtn.addEventListener('click', closeModal);
+            closeDeleteBtn.addEventListener('click', closeModal);
+            cancelBtn.addEventListener('click', closeModal);
+            cancelDeleteBtn.addEventListener('click', closeModal);
+            
+            // Click outside modal to close
+            window.addEventListener('click', (e) => {
+                if (e.target === categoryModal || e.target === deleteModal) {
+                    closeModal();
+                }
+            });
+            
+            // Auto-generate slug from name
+            document.getElementById('categoryName').addEventListener('input', function() {
+                const name = this.value;
+                const slugInput = document.getElementById('categorySlug');
+                
+                // Only auto-fill if slug is empty or matches the previous name
+                if (!slugInput.value || slugInput.value === slugify(this.defaultValue || '')) {
+                    slugInput.value = slugify(name);
+                }
+            });
+        }
+        
+        function fetchCategoryData(categoryId) {
+            fetch(`/service_category/${categoryId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { 
+                            throw new Error(err.error || 'Failed to fetch category'); 
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('categoryId').value = data.id;
+                    document.getElementById('addCategory').value = '';
+                    document.getElementById('categoryName').value = data.name;
+                    document.getElementById('categorySlug').value = data.slug;
+                    document.getElementById('categoryDescription').value = data.description || '';
+                    
+                    document.getElementById('categoryName').defaultValue = data.name;
+                    document.getElementById('categorySlug').defaultValue = data.slug;
+                    
+                    modalTitle.textContent = 'Edit Category';
+                    categoryModal.style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showFlashMessage('danger', error.message);
+                });
+        }
+
+        // Handle form submission
+        document.getElementById('categoryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const categoryId = formData.get('category_id');
+            
+            if (categoryId) {
+                // Update existing category (PUT)
+                const jsonData = {
+                    name: formData.get('name'),
+                    slug: formData.get('slug'),
+                    description: formData.get('description') || ''
+                };
+                
+                fetch(`/service_category/${categoryId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(jsonData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw new Error(err.error || 'Update failed') });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showFlashMessage('success', data.message || 'Category updated successfully');
+                    closeModal();
+                    setTimeout(() => window.location.reload(), 1000);
+                })
+                .catch(error => {
+                    showFlashMessage('danger', error.message);
+                });
+            } else {
+                // Create new category (POST)
+                fetch('/service_categories', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw new Error(err.error || 'Create failed') });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showFlashMessage('success', data.message || 'Category created successfully');
+                    closeModal();
+                    setTimeout(() => window.location.reload(), 1000);
+                })
+                .catch(error => {
+                    showFlashMessage('danger', error.message);
+                });
+            }
+        });
+
+        // Handle delete form submission
+        document.getElementById('deleteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const categoryId = document.getElementById('deleteCategoryId').value;
+            
+            fetch(`/service_category/${categoryId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || 'Delete failed') });
+                }
+                return response.json();
+            })
+            .then(data => {
+                showFlashMessage('success', data.message || 'Category deleted successfully');
+                closeModal();
+                setTimeout(() => window.location.reload(), 1000);
+            })
+            .catch(error => {
+                showFlashMessage('danger', error.message);
+            });
+        });
+
+        // Show flash message
+        function showFlashMessage(type, message) {
+            const alertContainer = document.getElementById('alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <i class="fas ${getIconForType(type)}"></i>
+                    <span style="margin-left: 10px;">${message}</span>
+                </div>
+                <button class="close-btn" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            alertContainer.appendChild(alert);
+            
+            // Auto close setelah 5 detik
+            setTimeout(() => {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            }, 5000);
+        }
+
+        // Auto-close flash messages after 5 seconds
+        function autoCloseAlerts() {
+            const alerts = document.querySelectorAll('#alert-container .alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.transition = 'opacity 0.5s';
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 500);
+                }, 5000);
+            });
+        }
+
+        // Get icon berdasarkan tipe flash message
+        function getIconForType(type) {
+            switch(type) {
+                case 'success': return 'fa-check-circle';
+                case 'danger': return 'fa-exclamation-circle';
+                case 'warning': return 'fa-exclamation-triangle';
+                case 'info': return 'fa-info-circle';
+                default: return 'fa-info-circle';
+            }
+        }
+
+        // Helper function to generate slug
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        
+        // Close modal
+        function closeModal() {
+            categoryModal.style.display = 'none';
+            deleteModal.style.display = 'none';
+        }
+        
+        // Initialize the application
+        init();
+    </script>
+</body>
+</html>

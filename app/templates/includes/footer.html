@@ -1,0 +1,184 @@
+<!-- footer.html -->
+<footer id="mainFooter">
+    <div class="footer-container">
+        <!-- Top Row -->
+        <div class="footer-top">
+            <div class="footer-brand">
+                <img src="{{ url_for('static', filename='uploads/icon_cim.png') }}" alt="Logo" class="logo">
+            </div>
+            
+            <div class="footer-nav">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/about-us" class="nav-link">About</a>
+                <a href="/services" class="nav-link">Service</a>
+                <a href="/portofolio" class="nav-link">Portofolio</a>
+            </div>
+        </div>
+        
+        <!-- Divider Line -->
+        <div class="divider"></div>
+        
+        <!-- Bottom Row -->
+        <div class="footer-bottom">
+            <p class="footer-text">© <span id="currentYear"></span> Carstensz Intekom Mediacorp. All rights reserved.</p>
+            
+            <div class="social-media">
+                <a href="https://www.linkedin.com/company/cimidn/" class="social-icon"><i class="fa fa-linkedin"></i></a>
+                <a href="https://www.behance.net/cimidn" class="social-icon"><i class="fa fa-behance"></i></a>
+                <a href="https://www.instagram.com/cim.idn/" class="social-icon"><i class="fa fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Mendapatkan tahun saat ini dan memasukkannya ke dalam elemen
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    @import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
+</style>
+<style>
+    /* ===== BASE STYLES ===== */
+    #mainFooter {
+        background-color: #151515;
+        color: white;
+        padding: 60px 5% 40px;
+        font-family: 'Neue Haas Grotesk Display Pro';
+    }
+    
+    /* Tambahkan font-family untuk semua elemen text */
+    .footer-container,
+    .footer-container *:not(.fa) {
+        font-family: 'Neue Haas Grotesk Display Pro';
+    }
+    
+    /* ===== TOP SECTION ===== */
+    .footer-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .logo {
+        width: 150px;
+        height: auto;
+    }
+    
+    .copyright {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 5px;
+    }
+    
+    /* ===== NAVIGATION LINKS ===== */
+    .footer-nav {
+        display: flex;
+        gap: 40px;
+    }
+    
+    .nav-link {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        position: relative;
+        padding-bottom: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        color: #238CCE;
+    }
+    
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #238CCE;
+        transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+        width: 100%;
+    }
+    
+    /* ===== DIVIDER ===== */
+    .divider {
+        height: 1px;
+        background-color: rgba(255, 255, 255, 0.2);
+        margin: 30px 0;
+    }
+    
+    /* ===== BOTTOM SECTION ===== */
+    .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .footer-text {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.6;
+        max-width: 50%;
+    }
+    
+    /* ===== SOCIAL ICONS ===== */
+    .social-media {
+        display: flex;
+        gap: 25px;
+    }
+    
+    .social-icon {
+        color: white;
+        font-size: 22px;
+        transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        color: #238CCE;
+        transform: translateY(-3px);
+    }
+    
+    /* ===== RESPONSIVE ADJUSTMENTS ===== */
+    @media (max-width: 768px) {
+        .footer-top {
+            flex-direction: column;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        .footer-nav {
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .footer-bottom {
+            flex-direction: column;
+            gap: 25px;
+            align-items: flex-start;
+        }
+        
+        .footer-text {
+            max-width: 100%;
+        }
+        
+        .social-media {
+            align-self: flex-end;
+        }
+    }
+</style>

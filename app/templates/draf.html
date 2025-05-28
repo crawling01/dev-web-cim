@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link href="https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro" rel="stylesheet">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
+        </style>
+    <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Neue Haas Grotesk Display Pro', 'DM Sans', sans-serif;
+        background: #151515;
+        color: white;
+        overflow-x: hidden;
+        margin: 0; 
+        padding: 0; 
+        }
+
+    .container {
+        width: 100%;
+        max-width: 100%; 
+        margin: 0 auto;
+        position: relative;
+        padding: 0; 
+    }
+
+    .highlight {
+    color: #238CCE;
+    font-weight: 500;
+    }
+
+    /* ======================
+    BUTTONS 
+    ====================== */
+    .btn {
+        display: inline-block;
+        background: #238CCE;
+        color: white;
+        padding: 10px 30px;
+        border-radius: 100px;
+        font-size: 16px;
+        font-family: 'Neue Haas Grotesk Display Pro';
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        }
+
+    .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* ======================
+    TYPOGRAPHY 
+    ====================== */
+    .section-title {
+    font-size: clamp(36px, 6vw, 68px);
+    font-weight: 450;
+    line-height: 1.2;
+    margin-bottom: 45px;
+    }
+
+    .section-text {
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1.5;
+    max-width: 736px;
+    margin-bottom: 45px;
+    }
+
+    .section-label {
+    color: rgba(255, 255, 255, 0.60);
+    font-size: 20px;
+    margin-bottom: 20px;
+    }
+
+    /* ======================
+    HERO SECTION 
+    ====================== */
+    .hero {
+    width: 100%;
+    height: 100vh;
+    min-height: 800px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0; /* Tambahkan ini */
+    padding: 0; /* Tambahkan ini */
+    }
+
+    .hero-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+    z-index: 0;
+    }
+
+    .hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 0; /* Ubah dari 0 5% menjadi 0 */
+    text-align: center;
+    width: 100%; /* Tambahkan ini */
+    max-width: none; /* Tambahkan ini */
+}
+
+    .hero-title {
+    font-size: clamp(86px, 8vw, 96px);
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+    font-size: clamp(16px, 2vw, 24px);
+    font-weight: 900;
+    margin-bottom: 30px;
+    }
+
+    .hero-text {
+    font-size: clamp(16px, 2vw, 22px);
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    line-height: 1.5;
+    }
+
+    /* ======================
+    BLUE OCEAN SECTION 
+    ====================== */
+    .blue-ocean {
+    padding: 100px 5%;
+    position: relative;
+    }
+
+    /* ======================
+    SERVICES SECTION 
+    ====================== */
+    .services {
+    padding: 100px 5%;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+    }
+
+    .service-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
+        padding: 40px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        min-height: 436px;
+    }
+
+    .service-card::after {
+        content: '';
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background-color: #238CCE;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(150%) rotate(0deg);
+        transition: all 0.3s ease;
+        opacity: 0;
+    }
+
+    .service-card:hover::after {
+        content: '\2197'; /* Unicode untuk panah kanan atas */
+        font-family: 'Neue Haas Grotesk Display Pro','Font Awesome', sans-serif;
+        font-size: 18px;
+        color: white;
+        transform: translateX(0) rotate(45deg);
+        opacity: 1;
+    }
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        background: rgba(35, 140, 206, 0.3);
+        border-color: #238CCE;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+
+    .service-title {
+        font-size: 26px;
+        font-weight: 700;
+        text-transform: capitalize;
+        margin-bottom: 20px;
+    }
+
+    .service-desc {
+        font-size: 16px;
+        opacity: 0.7;
+        line-height: 1.5;
+        margin-bottom: 30px;
+    }
+
+    .service-image {
+        width: 100%;
+        height: 228px;
+        object-fit: cover;
+        border-radius: 25px;
+        margin-top: 20px;
+    }
+
+    .service-category {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(35, 140, 206, 0.8);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+
+    .service-card:hover .service-category {
+        opacity: 0;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .service-card {
+            min-height: auto;
+            padding: 30px;
+        }
+        
+        .service-image {
+            height: 180px;
+        }
+    }
+    <style>
+    /* ======================
+    PORTFOLIO SECTION - FIGMA STYLE
+    ====================== */
+    .portfolio {
+        padding: 100px 5%;
+        text-align: center;
+        position: relative;
+        background: #151515;
+    }
+
+    .portfolio-title {
+        font-size: clamp(36px, 6vw, 68px);
+        font-weight: 450;
+        margin-bottom: 60px;
+        color: white;
+    }
+
+    .portfolio-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .portfolio-items {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        gap: 40px;
+        padding: 20px 0;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .portfolio-items::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    .portfolio-item-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        flex: 0 0 calc(100% - 40px);
+        min-width: calc(100% - 40px);
+        scroll-snap-align: start;
+    }
+
+    .portfolio-item {
+        padding: 40px;
+        background: linear-gradient(rgba(35,140,206,0.2), rgba(21,21,21,0.2));
+        border: 2px solid rgba(35,140,206,0.5);
+        border-radius: 62px;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .portfolio-item:hover {
+        border-color: rgba(35,140,206,1);
+        background: linear-gradient(rgba(35,140,206,0.3), rgba(21,21,21,0.3));
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .portfolio-content {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+        text-align: left;
+    }
+
+    .portfolio-image {
+        width: 50%;
+        height: 500px;
+        border-radius: 40px;
+        object-fit: cover;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
+
+    .portfolio-item:hover .portfolio-image {
+        transform: scale(1.02);
+    }
+
+    .portfolio-details {
+        width: 50%;
+        padding: 20px;
+    }
+
+    .portfolio-name {
+        font-size: clamp(28px, 4vw, 68px);
+        font-weight: 500;
+        margin-bottom: 30px;
+        line-height: 1.1;
+        color: white;
+        transition: color 0.3s ease;
+    }
+
+    .portfolio-item:hover .portfolio-name {
+        color: #238CCE;
+    }
+
+    .portfolio-tags {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .portfolio-tag {
+        padding: 8px 20px;
+        background: rgba(35,140,206,0.2);
+        border-radius: 36px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .portfolio-desc {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        opacity: 0.9;
+    }
+
+    .portfolio-btn {
+        display: inline-block;
+        background: #238CCE;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 100px;
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .portfolio-item:hover .portfolio-btn {
+        background: #1a7bb3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .portfolio-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #238CCE;
+        color: white;
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+    .portfolio-nav-btn:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 5px 15px rgba(35,140,206,0.5);
+    }
+
+    .portfolio-prev {
+        left: -80px;
+    }
+
+    .portfolio-next {
+        right: -80px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1200px) {
+        .portfolio-content {
+            flex-direction: column;
+        }
+        
+        .portfolio-image,
+        .portfolio-details {
+            width: 100%;
+        }
+        
+        .portfolio-image {
+            height: 400px;
+        }
+        
+        .portfolio-prev {
+            left: -40px;
+        }
+        
+        .portfolio-next {
+            right: -40px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .portfolio {
+            padding: 80px 5%;
+        }
+        
+        .portfolio-item {
+            padding: 30px;
+            border-radius: 40px;
+        }
+        
+        .portfolio-image {
+            height: 350px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .portfolio-title {
+            margin-bottom: 40px;
+        }
+        
+        .portfolio-item-link {
+            flex: 0 0 calc(100% - 20px);
+            min-width: calc(100% - 20px);
+        }
+        
+        .portfolio-image {
+            height: 300px;
+            border-radius: 30px;
+        }
+        
+        .portfolio-tag {
+            font-size: 14px;
+            padding: 6px 15px;
+        }
+        
+        .portfolio-desc {
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .portfolio-nav-btn {
+            width: 50px;
+            height: 50px;
+            font-size: 18px;
+        }
+        
+        .portfolio-prev {
+            left: 10px;
+        }
+        
+        .portfolio-next {
+            right: 10px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .portfolio-item {
+            padding: 25px;
+            border-radius: 30px;
+        }
+        
+        .portfolio-image {
+            height: 250px;
+        }
+        
+        .portfolio-name {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .portfolio-tags {
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .portfolio-desc {
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        
+        .portfolio-btn {
+            padding: 8px 20px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .portfolio {
+            padding: 60px 5%;
+        }
+        
+        .portfolio-image {
+            height: 200px;
+        }
+    }
+
+    /* ======================
+    TESTIMONIALS SECTION 
+    ====================== */
+    .testimonials {
+        background: #238CCE;
+        padding: 80px 5%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .testimonials-container {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .testimonial-slides {
+        display: flex;
+        width: 100%;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .testimonial-slide {
+        min-width: 100%;
+        flex-shrink: 0;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .testimonial-text {
+        font-size: clamp(18px, 3vw, 22px);
+        line-height: 1.5;
+        max-width: 650px;
+        margin: 0 auto 40px;
+        text-align: center;
+    }
+
+    .testimonial-author {
+        text-align: center;
+    }
+
+    .author-name {
+        font-size: clamp(24px, 3vw, 32px);
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .author-company {
+        font-size: clamp(14px, 2vw, 16px);
+        font-weight: 450;
+    }
+
+    .author-image-wrapper {
+        width: 120px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0f0f0;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto 20px;
+    }
+
+    .author-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .testimonial-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white;
+        color: #238CCE;
+        border: none;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+    .testimonial-nav-btn:hover {
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .testimonial-prev {
+        left: 10px;
+    }
+
+    .testimonial-next {
+        right: 10px;
+    }
+
+    .testimonial-dots {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 30px;
+    }
+
+    .testimonial-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .testimonial-dot.active {
+        background: white;
+        transform: scale(1.2);
+    }
+
+    /* ======================
+    CLIENTS SECTION 
+    ====================== */
+    .clients {
+    background: #181818;
+    padding: 100px 5%;
+    text-align: center;
+    }
+
+    .clients-label {
+    color: rgba(255, 255, 255, 0.40);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    }
+
+    .clients-title {
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.3;
+    max-width: 890px;
+    margin: 0 auto 50px;
+    }
+
+    .client-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    }
+
+    .client-logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    }
+
+    /* ======================
+    STATS SECTION 
+    ====================== */
+    .stats {
+    background: #181818;
+    padding: 100px 5%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    }
+
+    .stats-title {
+    font-size: clamp(36px, 6vw, 68px);
+    line-height: 1.2;
+    max-width: 890px;
+    margin: 0 auto 80px;
+    }
+
+    .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 50px;
+    position: relative;
+    z-index: 1;
+    }
+
+    .stat-number {
+    font-size: clamp(48px, 6vw, 64px);
+    margin-bottom: 10px;
+    }
+
+    .stat-label {
+    font-size: 20px;
+    }
+
+    .stats-bg {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    left: -50%;
+    top: 0;
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, #151515 90%, #238CCE 100%);
+    border-radius: 50%;
+    z-index: 0;
+    }
+
+    /* ======================
+    FOOTER 
+    ====================== */
+    footer {
+    background: #151515;
+    padding: 80px 5% 40px;
+    }
+
+    .footer-divider {
+    height: 1px;
+    background: rgba(235, 234, 237, 0.5);
+    margin: 30px 0;
+    }
+
+    .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    }
+
+    .footer-logo {
+    height: 24px;
+    margin-bottom: 20px;
+    }
+
+    .footer-text {
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 0.8;
+    }
+
+    .footer-links {
+    display: flex;
+    gap: 30px;
+    justify-content: flex-end;
+    }
+
+    .footer-social {
+    display: flex;
+    gap: 34px;
+    justify-content: flex-end;
+    align-items: center;
+    }
+
+    /* ======================
+    TRANSITIONS & EFFECTS 
+    ====================== */
+    .page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #238CCE;
+    z-index: 9999;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .page-transition.active {
+    transform: scaleY(1);
+    transform-origin: top;
+    }
+
+    .portfolio-nav-btn, .testimonial-nav-btn {
+    transition: all 0.3s ease, transform 0.2s ease;
+    will-change: transform;
+    }
+
+    .portfolio-nav-btn:active, .testimonial-nav-btn:active {
+    transform: translateY(-50%) scale(0.9) !important;
+    }
+
+    .portfolio-nav-btn[disabled], .testimonial-nav-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    }
+
+    .portfolio-items, .testimonial-slides {
+    will-change: transform;
+    }
+
+    /* ======================
+    RESPONSIVE ADJUSTMENTS 
+    ====================== */
+    @media (max-width: 1024px) {
+    .hero {
+        min-height: 700px;
+    }
+    
+    .service-card {
+        min-height: 380px;
+    }
+    
+    .portfolio-content {
+        gap: 30px;
+    }
+    
+    .portfolio-prev {
+        left: -30px;
+    }
+    
+    .portfolio-next {
+        right: -30px;
+    }
+    }
+
+    @media (max-width: 768px) {
+    .hero {
+        min-height: 600px;
+    }
+    
+    .portfolio-content {
+        flex-direction: column;
+    }
+    
+    .portfolio-image,
+    .portfolio-details {
+        width: 100%;
+    }
+    
+    .portfolio-nav-btn,
+    .testimonial-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .portfolio-prev,
+    .testimonial-prev {
+        left: 10px;
+    }
+    
+    .portfolio-next,
+    .testimonial-next {
+        right: 10px;
+    }
+    
+    .service-card {
+        min-height: auto;
+        padding: 30px;
+    }
+    
+    .service-image {
+        height: 180px;
+    }
+    }
+
+    @media (max-width: 480px) {
+    .hero {
+        min-height: 500px;
+    }
+    
+    .portfolio {
+        padding: 60px 5%;
+    }
+    
+    .portfolio-title {
+        font-size: 28px;
+        margin-bottom: 40px;
+    }
+    
+    .portfolio-tag {
+        font-size: 12px;
+    }
+    
+    .portfolio-desc {
+        font-size: 15px;
+    }
+    
+    .portfolio-btn {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+    
+    .portfolio-nav-btn,
+    .testimonial-nav-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+    
+    .btn {
+        padding: 8px 20px;
+        font-size: 14px;
+    }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <img class="hero-bg" src="{{ url_for('static', filename='bg.png') }}" alt="Background">
+            <!-- Load the navbar -->
+            <div id="navbar-container"></div>
+            {% include "includes/navbar.html" %}
+            <div class="hero-content">
+                <div class="hero-subtitle">Think Bold - Create Bigger</div>
+                <h1 class="hero-title">We Make Brands Pop!</h1>
+                <p class="hero-text">Startup Framework gives you complete freedom over your creative process — you don't have to think about any technical aspects. There are no limits and absolutely no coding.</p>
+            </div>
+        </section>
+
+        <!-- Blue Ocean Section -->
+        <section class="blue-ocean">
+            <h2 class="section-title">Guided by the principles of the <span class="highlight">blue ocean strategy.</span></h2>
+            <p class="section-text">We ensure your brand stands out and thrives in competitive markets, delivering unique value that resonates with your audience and keeps your business ahead</p>
+            <a href="/about-us" class="btn">Know More</a>
+        </section>
+
+        <section class="services">
+            <h2 class="section-title">We're offering <span class="highlight">various services.</span></h2>
+            <p class="section-text">Explore our comprehensive range of creative services designed to elevate your brand and engage your audience.</p>
+            
+            <div class="services-grid">
+                {% for service in services %}
+                <div class="service-card {% if loop.first %}featured{% endif %}" onclick="location.href='{{ url_for('service') }}';" style="cursor: pointer;">
+                    <h3 class="service-title">{{ service.title }}</h3>
+                    <p class="service-desc">{{ service.short_description }}</p>
+                    {% if service.featured_image %}
+                    <img class="service-image" src="{{ url_for('static', filename='uploads/' + service.featured_image) }}" alt="{{ service.title }}">
+                    {% else %}
+                    <img class="service-image" src="{{ url_for('static', filename='images/default-service.jpg') }}" alt="Default Service Image">
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+
+        <!-- Portfolio Section - Figma Style -->
+        <section class="portfolio">
+            <h2 class="portfolio-title">Selected Works</h2>
+            
+            <div class="portfolio-container">
+                <button class="portfolio-nav-btn portfolio-prev" onclick="scrollPortfolio(-1)">
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                
+                <div class="portfolio-items" id="portfolio-items">
+                    {% for portfolio in featured_portfolios %}
+                    <a href="{{ url_for('portfolio_details', id=portfolio.id) }}" class="portfolio-item-link">
+                        <div class="portfolio-item">
+                            <div class="portfolio-content">
+                                <img class="portfolio-image" src="{{ url_for('static', filename='uploads/' + portfolio.cover_image) if portfolio.cover_image else url_for('static', filename='images/default-portfolio.jpg') }}" alt="{{ portfolio.title }}">
+                                <div class="portfolio-details">
+                                    <h3 class="portfolio-name">{{ portfolio.title }}</h3>
+                                    <div class="portfolio-tags">
+                                        <span class="portfolio-tag">{{ portfolio.client_name }}</span>
+                                        <span class="portfolio-tag">{{ portfolio.project_date.strftime('%Y') if portfolio.project_date else 'N/A' }}</span>
+                                    </div>
+                                    <p class="portfolio-desc">{{ portfolio.description[:200] }}{% if portfolio.description|length > 200 %}...{% endif %}</p>
+                                    <div class="portfolio-btn">View Details</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                
+                <button class="portfolio-nav-btn portfolio-next" onclick="scrollPortfolio(1)">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <div class="section-label">Testimonials</div>
+            <h2 class="section-title">Inspiring collaborations and amazing results.</h2>
+            
+            <div class="testimonials-container">
+                <button class="testimonial-nav-btn testimonial-prev" onclick="scrollTestimonial(-1)">
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                
+                <div class="testimonial-slides" id="testimonial-slides">
+                    {% for testimonial in testimonials %}
+                    <div class="testimonial-slide">
+                        <div style="display: flex; align-items: center; gap: 50px;">
+                            <div style="flex-shrink: 0;">
+                                <div class="testimonial-author">
+                                    {% if testimonial.image %}
+                                        <img class="author-image" src="{{ url_for('static', filename='uploads/testimonials/' ~ testimonial.image) }}" alt="{{ testimonial.name }}">
+                                    {% else %}
+                                        <div class="no-photo-icon">
+                                            <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="author-name">{{ testimonial.name }}</div>
+                                    <div class="author-company">{{ testimonial.company or 'Happy Client' }}</div>
+                                </div>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <p class="testimonial-text">{{ testimonial.testimonial_text }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <button class="testimonial-nav-btn testimonial-next" onclick="scrollTestimonial(1)">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="testimonial-dots">
+                {% for i in range(testimonials|length) %}
+                <button class="testimonial-dot {% if loop.first %}active{% endif %}" onclick="goToTestimonial({{ loop.index0 }})"></button>
+                {% endfor %}
+            </div>
+        </section>
+        <!-- Clients Section -->
+        <section class="clients">
+            <div class="clients-label">Our Clients</div>
+            <h2 class="clients-title">Folks at these Awesome Companies are Already Using Our Excellent Services</h2>
+            
+            <div class="client-logos">
+                <img class="client-logo" src="{{ url_for('static', filename='Amazon2x.png') }}" alt="Amazon">
+                <img class="client-logo" src="{{ url_for('static', filename='Netfilx2x.png') }}" alt="Netflix">
+                <img class="client-logo" src="{{ url_for('static', filename='Mashable2x.png') }}" alt="Mashable">
+                <img class="client-logo" src="{{ url_for('static', filename='Atlassian2x.png') }}" alt="Atlassian">
+                <img class="client-logo" src="{{ url_for('static', filename='Forbes2x.png') }}" alt="Forbes">
+            </div>            
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <h2 class="stats-title">Our impact in numbers</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">89</div>
+                    <div class="stat-label">Happy Clients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">120+</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Team Members</div>
+                </div>
+            </div>
+            
+            <div class="stats-bg"></div>
+        </section>
+        <footer id="footer-container"></footer>
+        {% include "includes/footer.html" %}
+    </div>
+    <div class="page-transition"></div>
+
+    <script>
+        // Ganti fungsi scrollPortfolio dengan ini
+let portfolioIndex = 0;
+const portfolioItems = document.getElementById('portfolio-items');
+const portfolioSlides = document.querySelectorAll('.portfolio-item');
+const portfolioCount = portfolioSlides.length;
+
+function scrollPortfolio(direction) {
+    portfolioIndex = (portfolioIndex + direction + portfolioCount) % portfolioCount;
+    
+    // Smooth scroll ke item yang dituju
+    portfolioItems.scrollTo({
+        left: portfolioIndex * portfolioItems.offsetWidth,
+        behavior: 'smooth'
+    });
+    
+    // Update button states
+    updatePortfolioNavButtons();
+}
+
+function updatePortfolioNavButtons() {
+    document.querySelector('.portfolio-prev').disabled = portfolioIndex === 0;
+    document.querySelector('.portfolio-next').disabled = portfolioIndex === portfolioCount - 1;
+}
+
+// Inisialisasi saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    updatePortfolioNavButtons();
+    
+    // Handle swipe untuk mobile
+    let startX;
+    portfolioItems.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
+    
+    portfolioItems.addEventListener('touchend', (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+        
+        if (diff > 50) {
+            scrollPortfolio(1); // Swipe left
+        } else if (diff < -50) {
+            scrollPortfolio(-1); // Swipe right
+        }
+    });
+});
+        
+    // Enhanced Testimonial Carousel
+let testimonialIndex = 0;
+const testimonialSlides = document.getElementById('testimonial-slides');
+const testimonialCount = document.querySelectorAll('.testimonial-slide').length;
+const testimonialDots = document.querySelectorAll('.testimonial-dot');
+
+function updateTestimonialUI() {
+    // Scroll to the correct slide
+    testimonialSlides.style.transition = 'transform 0.5s ease-in-out';
+    testimonialSlides.style.transform = `translateX(-${testimonialIndex * 100}%)`;
+    
+    // Update dot states
+    testimonialDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === testimonialIndex);
+    });
+    
+    // Update button states
+    document.querySelector('.testimonial-prev').disabled = testimonialIndex === 0;
+    document.querySelector('.testimonial-next').disabled = testimonialIndex === testimonialCount - 1;
+}
+
+function scrollTestimonial(direction) {
+    testimonialIndex = (testimonialIndex + direction + testimonialCount) % testimonialCount;
+    updateTestimonialUI();
+}
+
+function goToTestimonial(index) {
+    testimonialIndex = index;
+    updateTestimonialUI();
+}
+
+// Initialize
+updateTestimonialUI();
+
+// Auto-rotate testimonials
+let testimonialInterval = setInterval(() => {
+    scrollTestimonial(1);
+}, 5000);
+
+// Pause on hover
+testimonialSlides.addEventListener('mouseenter', () => {
+    clearInterval(testimonialInterval);
+});
+
+testimonialSlides.addEventListener('mouseleave', () => {
+    testimonialInterval = setInterval(() => {
+        scrollTestimonial(1);
+    }, 5000);
+});
+
+        function updateTestimonialNavButtons() {
+            testimonialPrevBtn.disabled = testimonialIndex === 0;
+            testimonialNextBtn.disabled = testimonialIndex === testimonialCount - 1;
+        }
+
+        // Panggil sekali di awal
+        updateTestimonialNavButtons();
+        
+        // Add hover effects for navigation buttons
+        document.querySelectorAll('.portfolio-nav-btn, .testimonial-nav-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.style.transform = btn.style.transform.includes('translateY(-50%)') 
+                    ? 'translateY(-50%) scale(1.1)' 
+                    : 'scale(1.1)';
+                btn.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                if (btn.classList.contains('portfolio-prev') || btn.classList.contains('portfolio-next')) {
+                    btn.style.transform = 'translateY(-50%)';
+                } else if (btn.classList.contains('testimonial-prev') || btn.classList.contains('testimonial-next')) {
+                    btn.style.transform = 'translateY(-50%)';
+                } else {
+                    btn.style.transform = '';
+                }
+                btn.style.boxShadow = '';
+            });
+        });
+    </script>
+    <script>
+        // Auto-scroll portfolio items
+        let portfolioInterval;
+        
+        function startPortfolioAutoScroll() {
+            // Scroll every 5 seconds (5000 milliseconds)
+            portfolioInterval = setInterval(() => {
+                scrollPortfolio(1); // Scroll to next item
+            }, 3000);
+        }
+        
+        function stopPortfolioAutoScroll() {
+            clearInterval(portfolioInterval);
+        }
+        
+        // Start auto-scroll when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            startPortfolioAutoScroll();
+            
+            // Pause auto-scroll when user interacts with navigation
+            const portfolioContainer = document.querySelector('.portfolio-container');
+            portfolioContainer.addEventListener('mouseenter', stopPortfolioAutoScroll);
+            portfolioContainer.addEventListener('mouseleave', startPortfolioAutoScroll);
+            
+            // Also pause when buttons are focused (for keyboard users)
+            const navButtons = document.querySelectorAll('.portfolio-nav-btn');
+            navButtons.forEach(button => {
+                button.addEventListener('focus', stopPortfolioAutoScroll);
+                button.addEventListener('blur', startPortfolioAutoScroll);
+            });
+        });
+        
+        // Assuming you have this scrollPortfolio function already
+        function scrollPortfolio(direction) {
+            const container = document.getElementById('portfolio-items');
+            const scrollAmount = 300; // Adjust this value based on your item width
+            container.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+            
+            // Reset the auto-scroll timer when manually scrolling
+            stopPortfolioAutoScroll();
+            startPortfolioAutoScroll();
+        }
+        // Update fungsi scrollPortfolio
+        function scrollPortfolio(direction) {
+            const container = document.getElementById('portfolio-items');
+            const itemWidth = container.querySelector('.portfolio-item').offsetWidth + 40; // termasuk gap
+            
+            container.scrollBy({
+                left: direction * itemWidth,
+                behavior: 'smooth'
+            });
+            
+            // Reset auto-scroll timer
+            stopPortfolioAutoScroll();
+            startPortfolioAutoScroll();
+        }
+        </script>
+        <script>
+            // Enhanced Portfolio Carousel
+            let portfolioIndex = 0;
+            const portfolioItems = document.getElementById('portfolio-items');
+            const portfolioSlides = document.querySelectorAll('.portfolio-item-link');
+            const portfolioCount = portfolioSlides.length;
+            let isDragging = false;
+            let startPos = 0;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+            let animationID;
+            
+            function updatePortfolioNavButtons() {
+                document.querySelector('.portfolio-prev').disabled = portfolioIndex === 0;
+                document.querySelector('.portfolio-next').disabled = portfolioIndex === portfolioCount - 1;
+            }
+            
+            function scrollPortfolio(direction) {
+                portfolioIndex = (portfolioIndex + direction + portfolioCount) % portfolioCount;
+                
+                // Smooth scroll to the target item
+                portfolioItems.scrollTo({
+                    left: portfolioIndex * portfolioItems.offsetWidth,
+                    behavior: 'smooth'
+                });
+                
+                updatePortfolioNavButtons();
+            }
+            
+            // Initialize
+            document.addEventListener('DOMContentLoaded', function() {
+                updatePortfolioNavButtons();
+                
+                // Touch event handlers for swipe
+                portfolioItems.addEventListener('touchstart', touchStart, { passive: true });
+                portfolioItems.addEventListener('touchmove', touchMove, { passive: false });
+                portfolioItems.addEventListener('touchend', touchEnd);
+                
+                // Mouse event handlers for drag
+                portfolioItems.addEventListener('mousedown', mouseDown);
+                portfolioItems.addEventListener('mousemove', mouseMove);
+                portfolioItems.addEventListener('mouseup', mouseUp);
+                portfolioItems.addEventListener('mouseleave', mouseUp);
+            });
+            
+            // Touch events
+            function touchStart(e) {
+                startPos = e.touches[0].clientX;
+                isDragging = true;
+                animationID = requestAnimationFrame(animation);
+                portfolioItems.style.scrollBehavior = 'auto';
+            }
+            
+            function touchMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const currentPosition = e.touches[0].clientX;
+                const diff = currentPosition - startPos;
+                
+                if ((diff > 0 && portfolioIndex === 0) || 
+                    (diff < 0 && portfolioIndex === portfolioCount - 1)) {
+                    return;
+                }
+                
+                portfolioItems.scrollLeft -= diff;
+                startPos = currentPosition;
+            }
+            
+            function touchEnd() {
+                isDragging = false;
+                cancelAnimationFrame(animationID);
+                portfolioItems.style.scrollBehavior = 'smooth';
+                
+                // Determine if we should snap to next/prev slide
+                const threshold = portfolioItems.offsetWidth * 0.2;
+                const movedBy = startPos - e.changedTouches[0].clientX;
+                
+                if (movedBy > threshold && portfolioIndex < portfolioCount - 1) {
+                    scrollPortfolio(1);
+                } else if (movedBy < -threshold && portfolioIndex > 0) {
+                    scrollPortfolio(-1);
+                } else {
+                    // Snap back to current slide
+                    portfolioItems.scrollTo({
+                        left: portfolioIndex * portfolioItems.offsetWidth,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+            
+            // Mouse events
+            function mouseDown(e) {
+                isDragging = true;
+                startPos = e.clientX;
+                animationID = requestAnimationFrame(animation);
+                portfolioItems.style.scrollBehavior = 'auto';
+                portfolioItems.style.cursor = 'grabbing';
+            }
+            
+            function mouseMove(e) {
+                if (!isDragging) return;
+                const currentPosition = e.clientX;
+                const diff = currentPosition - startPos;
+                
+                if ((diff > 0 && portfolioIndex === 0) || 
+                    (diff < 0 && portfolioIndex === portfolioCount - 1)) {
+                    return;
+                }
+                
+                portfolioItems.scrollLeft -= diff;
+                startPos = currentPosition;
+            }
+            
+            function mouseUp() {
+                isDragging = false;
+                cancelAnimationFrame(animationID);
+                portfolioItems.style.scrollBehavior = 'smooth';
+                portfolioItems.style.cursor = 'grab';
+                
+                // Snap to nearest slide
+                const slideWidth = portfolioItems.offsetWidth;
+                const newIndex = Math.round(portfolioItems.scrollLeft / slideWidth);
+                
+                if (newIndex !== portfolioIndex) {
+                    portfolioIndex = newIndex;
+                    updatePortfolioNavButtons();
+                }
+                
+                portfolioItems.scrollTo({
+                    left: portfolioIndex * slideWidth,
+                    behavior: 'smooth'
+                });
+            }
+            
+            function animation() {
+                // Animation logic if needed
+                animationID = requestAnimationFrame(animation);
+            }
+            
+            // Auto-scroll functionality
+            let portfolioInterval;
+            
+            function startPortfolioAutoScroll() {
+                portfolioInterval = setInterval(() => {
+                    if (!isDragging) {
+                        scrollPortfolio(1);
+                    }
+                }, 5000);
+            }
+            
+            function stopPortfolioAutoScroll() {
+                clearInterval(portfolioInterval);
+            }
+            
+            // Start auto-scroll
+            startPortfolioAutoScroll();
+            
+            // Pause on hover
+            portfolioItems.addEventListener('mouseenter', stopPortfolioAutoScroll);
+            portfolioItems.addEventListener('mouseleave', startPortfolioAutoScroll);
+            
+            // Pause when buttons are focused
+            const navButtons = document.querySelectorAll('.portfolio-nav-btn');
+            navButtons.forEach(button => {
+                button.addEventListener('focus', stopPortfolioAutoScroll);
+                button.addEventListener('blur', startPortfolioAutoScroll);
+            });
+        </script>
+    <script src="{{ url_for('static', filename='js/transisi.js') }}"></script>
+</body>
+</html>

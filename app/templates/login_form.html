@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>Demo Model 3</title>
+</head>
+<body>
+    <h2>Demo Model 3</h2>
+
+    <form action="http://localhost:5000/login" method="post">
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+        <label>Username:</label><br />
+        <input type="text" name="username" /><br />
+        <label>Password:</label><br />
+        <input type="password" name="password" /><br />
+        <p><input type="submit" value="Login"></p>
+    </form>    
+
+    <p>Don't have an account? <a href="/signup">Sign up here</a></p>
+</body>
+</html>

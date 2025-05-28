@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ portfolio.title }} - Portfolio Details</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J8QGRPJHGD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-J8QGRPJHGD');
+    
+      document.addEventListener('DOMContentLoaded', function() {
+        // Track portfolio details view - menggunakan JSON untuk menghindari XSS
+        const portfolioData = {
+          title: {{ portfolio.title|tojson|safe }},
+          id: {{ portfolio.id|tojson|safe }},
+          category: {
+            name: {{ portfolio.category.name|tojson|safe }}
+          }
+        };
+        const referrer = {{ referrer|default('direct')|tojson|safe }};
+    
+        gtag('event', 'portfolio_details_view', {
+          'event_category': 'Portfolio Engagement',
+          'event_label': portfolioData.title,
+          'portfolio_id': portfolioData.id,
+          'portfolio_category': portfolioData.category.name,
+          'referrer': referrer,
+          'page_path': window.location.pathname
+        });
+        
+        // Track time spent
+        let startTime = new Date();
+        window.addEventListener('beforeunload', function() {
+          let timeSpent = (new Date() - startTime) / 1000;
+          gtag('event', 'portfolio_time_spent', {
+            'event_category': 'Engagement',
+            'event_label': portfolioData.title,
+            'value': Math.round(timeSpent),
+            'portfolio_id': portfolioData.id
+          });
+        });
+      });
+    </script>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
+
+        :root {
+            --primary: #238CCE;
+            --secondary: #151515;
+            --text: #F4F4F4;
+            --text-muted: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Neue Haas Grotesk Display Pro', 'DM Sans', sans-serif;
+        }
+
+        body {
+            background: var(--secondary);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .navbar {
+            position: absolute;
+            top: 49px;
+            left: 210px;
+            display: flex;
+            align-items: center;
+            gap: 185px;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+.hero {
+    width: 100%;
+    height: 720px;
+    position: relative; /* Container harus relative */
+    overflow: hidden; /* Untuk memastikan gambar tidak meluber */
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute; /* Gambar diposisikan absolute */
+    top: 0;
+    left: 0;
+}
+
+.hero-content {
+    position: absolute; /* Konten juga absolute */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 925px;
+    z-index: 2; /* Lebih tinggi dari gambar */
+}
+
+        .hero-title {
+            font-size: 96px;
+            font-weight: 450;
+            line-height: 82.56px;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 26px;
+        }
+
+        .project-section {
+            padding: 2.5rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 853px;
+            text-align: left;
+        }
+
+        .section-text {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.625;
+            margin-bottom: 40px;
+            text-align: justify;
+            width: 100%;
+            max-width: 853px;
+        }
+
+        .project-image {
+            width: 100%;
+            max-width: 853px;
+            background: #D9D9D9;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            object-fit: cover;
+        }
+
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 13px;
+            width: 853px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            width: 276px;
+            height: 184px;
+            background: #D9D9D9;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .no-gallery {
+            text-align: center;
+            width: 853px;
+            padding: 40px;
+            font-size: 18px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .external-links {
+            padding: 20px 20px 0 20px;
+            margin-bottom: 0;
+        }
+
+        .external-links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+            max-width: 853px;
+            margin-bottom: 20px;
+        }
+
+        .external-link-item {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .external-link-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .external-link-embed {
+            width: 100%;
+            height: 480px;
+            background: #2a2a2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+
+        .youtube-embed-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            position: relative;
+            margin-top: 40px; /* PENYESUAIAN PENTING */
+            overflow: hidden;
+        }
+
+        .youtube-embed {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: none;
+        }
+
+        .behance-embed {
+            width: 100%;
+            height: 480px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .behance-item iframe {
+            width: 100% !important;
+            height: 480px !important;
+            border: none !important;
+            border-radius: 10px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .external-link-label {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .external-link-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+@media (max-width: 768px) {
+    /* Base Reset */
+    body, html {
+        width: 100%;
+        overflow-x: hidden;
+        padding: 0;
+        margin: 0;
+    }
+    
+    /* Main Container */
+    .container {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    
+    /* Hero Section */
+    .hero {
+        width: 100%;
+        height: 100vh;
+        min-height: -webkit-fill-available;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+    }
+    
+    .hero-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        padding: 0;
+    }
+    
+    /* Project Section - Unified Width */
+    .project-section,
+    .external-links {
+        width: 92%;
+        margin: 0 auto;
+        padding: 1.5rem 0;
+    }
+    
+    /* Consistent Content Blocks */
+    .section-title,
+    .section-text,
+    .project-image,
+    .external-links-container,
+    .gallery-container,
+    .youtube-embed-wrapper,
+    .behance-embed-wrapper {
+        width: 100%;
+        margin: 0 auto 1.5rem auto;
+    }
+    
+    /* Media Elements */
+    .project-image,
+    .youtube-embed-wrapper,
+    .behance-embed-wrapper,
+    .gallery-item {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    /* YouTube Specific */
+    .youtube-embed-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        height: 0;
+    }
+    
+    .youtube-embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    
+    /* Gallery Adjustments */
+    .gallery {
+        width: 100%;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .gallery-item {
+        width: 100%;
+        aspect-ratio: 16/9;
+    }
+    
+    /* External Links Container */
+    .external-links-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div id="navbar-container"></div>
+    {% include "includes/navbar.html" %}
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="{{ url_for('static', filename='uploads/' + portfolio.cover_image) }}" alt="{{ portfolio.title }}" class="hero-image">
+        <div class="hero-content">
+            <h1 class="hero-title">{{ portfolio.title }}</h1>
+            <p class="hero-subtitle">{{ portfolio.description|truncate(100) }}</p>
+        </div>
+    </section>
+
+    <!-- Project Content -->
+    <div class="project-section">
+        <h2 class="section-title">Background</h2>
+        <p class="section-text">{{ portfolio.description }}</p>
+
+        <img src="{{ url_for('static', filename='uploads/' + portfolio.cover_image) }}" alt="Project Image" class="project-image">
+
+        {% if portfolio.idea %}
+        <h2 class="section-title">Idea</h2>
+        <p class="section-text">{{ portfolio.idea }}</p>
+        {% endif %}
+
+        <h2 class="section-title">Gallery</h2>
+        <div class="gallery-container">
+            {% if gallery_items %}
+            <div class="gallery">
+                {% for item in gallery_items %}
+                <div class="gallery-item">
+                    <img src="{{ url_for('static', filename='uploads/gallery/' + item.file_name) }}" alt="Gallery image {{ loop.index }}">
+                </div>
+                {% if loop.index % 3 == 0 and not loop.last %}
+            </div><div class="gallery">
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-gallery">No gallery images available for this project</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- External Links Section -->
+    <section class="external-links">
+        {% if portfolio.project_url or portfolio.project_url_behance %}
+        <div class="project-section">
+            <h2 class="section-title">More About This Project</h2>
+            <div class="external-links-container">
+                {% if portfolio.project_url %}
+                <div class="external-link-item youtube-item">
+                    {% if 'youtube.com' in portfolio.project_url or 'youtu.be' in portfolio.project_url %}
+                    {% set video_id = portfolio.project_url.split('v=')[1].split('&')[0] if 'v=' in portfolio.project_url else portfolio.project_url.split('youtu.be/')[1].split('?')[0] %}
+                    <div class="youtube-embed-wrapper">
+            <iframe class="youtube-embed"
+                    src="https://www.youtube.com/embed/{{ video_id }}"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+          </div>
+          <div class="external-link-label">
+            <a href="{{ portfolio.project_url }}" target="_blank" rel="noopener noreferrer"></a>
+          </div>
+        {% else %}
+          <div class="external-link-embed">
+            <div style="text-align: center;">
+              <i class="fa fa-external-link external-link-icon"></i>
+              <div>View External Content</div>
+            </div>
+            <span class="external-link-label">YouTube</span>
+          </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {% if portfolio.project_url_behance %}
+      <div class="external-link-item behance-item">
+        {% if 'behance.net' in portfolio.project_url_behance %}
+          {% set behance_id = portfolio.project_url_behance.split('/gallery/')[1].split('/')[0] %}
+          <div class="behance-embed-wrapper">
+            <iframe class="behance-embed"
+                    src="https://www.behance.net/embed/project/{{ behance_id }}?ilo0=1"
+                    allowfullscreen
+                    lazyload
+                    frameborder="0"
+                    referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+          <div class="external-link-label">
+            <a href="{{ portfolio.project_url_behance }}" target="_blank" rel="noopener noreferrer"></a>
+          </div>
+        {% else %}
+          <div class="external-link-embed">
+            <div style="text-align: center;">
+              <i class="fa fa-behance external-link-icon"></i>
+              <div>View on Behance</div>
+            </div>
+            <span class="external-link-label">Behance</span>
+          </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+    {% include "includes/footer.html" %}
+
+    <script>
+        // Simple hover effect for gallery items
+        document.querySelectorAll('.gallery-item img').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'scale(1.05)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/transisi.js') }}"></script>
+</body>
+</html>

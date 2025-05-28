@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J8QGRPJHGD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-J8QGRPJHGD');
+      
+      // Track page views with enhanced measurement
+      gtag('config', 'G-J8QGRPJHGD', {
+        'page_title': document.title,
+        'page_location': window.location.href,
+        'page_path': window.location.pathname
+      });
+    </script>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
+    </style>
+    <style>
+        /* ===== BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+            background: #151515;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* ===== NAVBAR ===== */
+        .navbar {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .nav-logo {
+            height: 24px;
+        }
+        
+        .nav-links, .nav-social {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #238CCE;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        /* ===== HERO SECTION ===== */
+        .about-hero {
+            width: 100%;
+            height: 100vh;
+            min-height: 720px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .about-hero-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .about-hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hero-main-title {
+            font-size: clamp(36px, 8vw, 64px);
+            font-weight: 450;
+            line-height: 68px;
+            margin-bottom: 20px;
+            margin-top: 250px;
+        }
+
+        .hero-main-title span {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            font-weight: 400;
+            line-height: 1.5;
+            max-width: 50%;
+            margin-left: auto;
+            margin-bottom: 5%;
+            text-align: right;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* ===== CORE VALUES SECTION ===== */
+        .values-section {
+            padding: 100px 5%;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 450;
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+        
+        .section-title span {
+            font-weight: 500;
+            color: #238CCE;
+        }
+        
+        .section-subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 840px;
+            margin: 0 auto 50px;
+        }
+        
+        .values-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .value-tab {
+            padding: 15px 25px;
+            border-radius: 36px;
+            border: 1px solid white;
+            font-size: 16px;
+            font-weight: 450;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: white;
+        }
+        
+        .value-tab.active {
+            background: #238CCE;
+            border-color: #238CCE;
+            font-weight: 500;
+        }
+        
+        .values-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            min-height: 200px;
+        }
+        
+        .value-content {
+            display: none;
+        }
+        
+        .value-content.active {
+            display: block;
+        }
+
+        .value-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .value-icon {
+            width: 139.76px;
+            height: 40px;
+            margin-bottom: 30px;
+            object-fit: contain;
+        }
+
+        .value-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .value-subtitle {
+            font-size: clamp(16px, 2vw, 16px);
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        /* ===== TEAM SECTION ===== */
+        .team-section {
+            padding: 100px 5%;
+            text-align: center;
+            background: #151515;
+        }
+/*         
+        .full-width-image-container {
+            width: 100%;
+            margin: 0 auto 50px;
+            overflow: hidden;
+        } */
+        
+        .full-width-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .team-grid-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            overflow: hidden;
+}
+
+        .team-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .team-filter {
+            padding: 15px 25px;
+            border-radius: 36px;
+            border: 1px solid white;
+            font-size: 16px;
+            font-weight: 450;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: white;
+        }
+        
+        .team-filter.active {
+            background: #238CCE;
+            border-color: #238CCE;
+            font-weight: 500;
+        }
+
+        .team-grid {
+            display: flex;
+            grid-template-columns: repeat(3, 1fr);
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin: 0 auto;
+        }
+
+        .team-member {
+            width: calc(25% - 30px); /* 4 columns accounting for gap */
+            min-width: 250px;
+            text-align: center;
+            display: none;
+        }
+
+        .team-member.active {
+            display: block;
+        }
+        
+        .team-member-img-container {
+            width: 100%;
+            margin-bottom: 20px;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+        
+        .team-member-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover .team-member-img {
+            transform: scale(1.05);
+        }
+        
+        .team-member-name {
+            font-size: 24px;
+            font-weight: 500;
+            color: #238CCE;
+            margin-bottom: 5px;
+        }
+        
+        .team-member-role {
+            font-size: 16px;
+            font-weight: 450;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Image Slider Styles */
+        /* ===== IMAGE SLIDER STYLES ===== */
+        .full-width-image-container {
+            width: 100%;
+            margin: 0 auto 50px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #151515; /* Warna background jika gambar tidak memenuhi */
+        }
+
+        .image-slider {
+            position: relative;
+            width: 100%;
+            max-height: 80vh; /* Batasi tinggi maksimum */
+            aspect-ratio: 16/9; /* Sesuaikan dengan aspek rasio gambar Anda */
+        }
+
+        .full-width-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Menampilkan gambar utuh tanpa crop */
+            border-radius: 10px;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transform: translateX(100%);
+        }
+
+        .full-width-image.active {
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        .full-width-image.prev {
+            transform: translateX(-100%);
+            z-index: 1;
+        }
+
+        .full-width-image.next {
+            transform: translateX(100%);
+            z-index: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .image-slider {
+                max-height: 60vh;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .image-slider {
+                max-height: 50vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .image-slider {
+                max-height: 40vh;
+            }
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #151515;
+            padding: 80px 5% 40px;
+        }
+        
+        .footer-divider {
+            height: 1px;
+            background: rgba(235, 234, 237, 0.5);
+            margin: 30px 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-logo {
+            height: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-text {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            justify-content: flex-end;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 34px;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        /* ===== RESPONSIVE ADJUSTMENTS ===== */
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .team-member {
+                width: calc(33.33% - 27px); /* 3 columns */
+            }
+        }
+
+        @media (max-width: 900px) {
+            .team-member {
+                width: calc(50% - 20px); /* 2 columns */
+            }
+        }
+
+        @media (max-width: 600px) {
+            .team-member {
+                width: 100%; /* 1 column */
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .team-grid {
+                grid-template-columns: repeat(3, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .team-grid {
+                grid-template-columns: repeat(2, minmax(250px, 1fr));
+            }
+            
+            .hero-subtitle {
+                max-width: 70%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .about-hero {
+                min-height: 600px;
+            }
+            
+            .team-member-name {
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .team-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+            
+            .hero-subtitle {
+                max-width: 100%;
+                text-align: left;
+                margin-left: 0;
+            }
+            
+            .values-tabs, .team-filters {
+                gap: 10px;
+            }
+            
+            .value-tab, .team-filter {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-hero {
+                min-height: 500px;
+            }
+            
+            .hero-main-title {
+                margin-top: 150px;
+            }
+        }
+        
+        /* ===== PAGE TRANSITION ===== */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #238CCE;
+            z-index: 9999;
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        
+        .page-transition.active {
+            transform: scaleY(1);
+            transform-origin: top;
+        }
+      
+/* Penanganan khusus untuk item terakhir ketika jumlah item 3n+1 */
+.team-member:last-child:nth-child(3n + 1) {
+    grid-column: 2;
+}
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    /* ===== TEAM SECTION ===== */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Default 3 kolom */
+    gap: 20px;
+    margin: 0 auto;
+}
+
+.team-member {
+    width: 100%; /* Gunakan full width dari grid cell */
+    min-width: 0; /* Reset min-width */
+    text-align: center;
+}
+    .team-grid {
+        grid-template-columns: repeat(3, 1fr); /* Tetap 3 kolom */
+        gap: 15px;
+                  justify-content: center;
+    }
+      /* Perbaikan untuk edge cases */
+    .team-grid:after {
+        content: "";
+        width: calc(33.33% - 15px);
+        visibility: hidden;
+    }
+}
+
+@media (max-width: 900px) {
+  /* ===== TEAM SECTION ===== */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Default 3 kolom */
+    gap: 20px;
+    margin: 0 auto;
+}
+
+.team-member {
+    width: 100%; /* Gunakan full width dari grid cell */
+    min-width: 0; /* Reset min-width */
+    text-align: center;
+}
+    .team-grid {
+        grid-template-columns: repeat(3, 1fr); /* Tetap 3 kolom */
+        gap: 15px;
+                  justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+  /* ===== TEAM SECTION ===== */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 0 auto;
+    justify-items: center; /* Pusatkan item dalam sel grid */
+  }
+
+  .team-member {
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+  }
+
+  /* Penanganan khusus untuk item terakhir ketika jumlah item = 3n+1 (1,4,7,...) */
+  .team-member:last-child:nth-child(3n + 1) {
+    grid-column: 2 / span 1; /* Posisikan di kolom tengah */
+  }
+
+  .team-member-name {
+    font-size: 18px;
+  }
+  
+  .team-member-role {
+    font-size: 14px;
+  }
+
+  /* Placeholder untuk menjaga alignment */
+  .team-grid::after {
+    content: "";
+    width: calc(33.33% - 12px);
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 600px) {
+  /* ===== TEAM SECTION ===== */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Default 3 kolom */
+    gap: 20px;
+    margin: 0 auto;
+}
+
+.team-member {
+    width: 100%; /* Gunakan full width dari grid cell */
+    min-width: 0; /* Reset min-width */
+    text-align: center;
+}
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 kolom di mobile kecil */
+        gap: 10px;
+                  justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+  /* ===== TEAM SECTION ===== */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Default 3 kolom */
+    gap: 20px;
+    margin: 0 auto;
+}
+
+.team-member {
+    width: 100%; /* Gunakan full width dari grid cell */
+    min-width: 0; /* Reset min-width */
+    text-align: center;
+}
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr); /* Tetap 2 kolom di mobile sangat kecil */
+                  justify-content: center;
+    }
+    
+    .team-member-img-container {
+        aspect-ratio: 3/4;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar -->
+        {% include "includes/navbar.html" %}
+
+        <!-- Hero Section -->
+        <section class="about-hero">
+            <img class="about-hero-bg" src="{{ url_for('static', filename='bg.png') }}" alt="Background">
+            <div class="about-hero-content">
+                <h1 class="hero-main-title">
+                    We are a dynamic team of <span>visionaries passionate</span> about being part of your success story.
+                </h1>
+                <h2 class="hero-subtitle">
+                    With a focus on strategic branding and media communication, we help businesses expand globally by creating memorable, impactful, and socially beneficial brands
+                </h2>
+            </div>
+        </section>
+
+        <!-- Core Values Section -->
+        <section class="values-section">
+            <div class="values-tabs">
+                <button class="value-tab active" data-tab="philosophy">Philosophy</button>
+                <button class="value-tab" data-tab="approach">Approach</button>
+                <button class="value-tab" data-tab="vision">Vision</button>
+                <button class="value-tab" data-tab="mission">Mission</button>
+            </div>
+            
+            <div class="values-content">
+                <div class="value-content active" id="philosophy-content">
+                    <div class="value-inner">
+                        <img class="value-icon" src="{{ url_for('static', filename='Philosophy.png') }}" alt="Philosophy">
+                        <h3 class="value-title">Inspired by <span style="font-weight: bold;">Indonesia's highest peak.</span></h3>                        
+                        <p class="value-subtitle">Carstensz represents our commitment to helping your business reach the pinnacle of success.</p>
+                    </div>
+                </div>                                
+                
+                <div class="value-content" id="approach-content">
+                    <div class="value-inner">
+                        <img class="value-icon" src="{{ url_for('static', filename='Approach.png') }}" alt="Approach">
+                        <h3 class="value-title">Guided by the principles of the <span style="font-weight: bold;">blue ocean strategy</span></h3>
+                        <p class="value-subtitle">We ensure your brand stands out and thrives in competitve markets, delivering unique value that resonates with your audience and keeps your business ahed</p>
+                    </div>
+                </div>
+                
+                <div class="value-content" id="vision-content">
+                    <div class="value-inner">
+                        <img class="value-icon" src="{{ url_for('static', filename='Vision.png') }}" alt="Vision">
+                        <h3 class="value-title">Our <span style="font-weight: bold;"> Vision</span></h3>
+                        <p class="value-subtitle">Our Vision is to make your business stand out and succeed, supporting startups and growing businesses in reaching new heights and expanding their products to a wider market.</p>
+                    </div>
+                </div>
+                
+                <div class="value-content" id="mission-content">
+                    <div class="value-inner">
+                        <img class="value-icon" src="{{ url_for('static', filename='Mission.png') }}" alt="Mission">
+                        <h3 class="value-title">Our <span style="font-weight: bold;"> Mission</span></h3>
+                        <p class="value-subtitle">Our mission is to help you conduct market research, develop branding and marketing strategies, and expand your product's appeal, using the expertise of our team to elevate your brand.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2 class="section-title"><span class="highlight">Meet The Team</span></h2>
+            <p class="section-subtitle">Our talented team of professionals brings diverse expertise and creative vision to every project we undertake.</p>
+            
+            <div class="full-width-image-container">
+                <div class="image-slider">
+                    <img src="{{ url_for('static', filename='Full-1.webp') }}" alt="Team Photo 1" class="full-width-image active">
+                    <img src="{{ url_for('static', filename='Full-2.webp') }}" alt="Team Photo 2" class="full-width-image next">
+                </div>
+            </div>
+            
+            <div class="team-filters">
+                <button class="team-filter active" data-team="all">All</button>
+                <button class="team-filter" data-team="Team Leads">Team Leads</button>
+                <button class="team-filter" data-team="Social Media">Social Media</button>
+                <button class="team-filter" data-team="Creatives">Creatives</button>
+                <button class="team-filter" data-team="Visual Designers">Visual Designers</button>
+                <button class="team-filter" data-team="Media Production">Media Production</button>
+            </div>
+            
+            <div class="team-grid-container">
+                <div class="team-grid">
+                    {% for member in team_members %}
+                    <div class="team-member" data-team="{{ member.divisi }}" data-level="{{ member.level }}">
+                        <div class="team-member-img-container">
+                            {% if member.file_name %}
+                                <img class="team-member-img" src="{{ url_for('static', filename='uploads/' + member.file_name) }}" alt="{{ member.nama }}">
+                            {% else %}
+                                <img class="team-member-img" src="https://placehold.co/400x500" alt="{{ member.nama }}">
+                            {% endif %}
+                        </div>
+                        <h3 class="team-member-name">{{ member.nama }}</h3>
+                        <p class="team-member-role">{{ member.subdivisi }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="footer-container"></footer>
+        {% include "includes/footer.html" %}
+    </div>
+    <div class="page-transition"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Value Tabs functionality
+            const valueTabs = document.querySelectorAll('.value-tab');
+            valueTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.value-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    document.querySelectorAll('.value-content').forEach(c => c.classList.remove('active'));
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-content`).classList.add('active');
+                });
+            });
+
+            // Team Filter functionality
+            const teamFilters = document.querySelectorAll('.team-filter');
+            const teamMembers = document.querySelectorAll('.team-member');
+
+            // Simpan semua anggota tim dalam array untuk pemrosesan
+            const allMembers = Array.from(teamMembers);
+
+            teamFilters.forEach(filter => {
+            filter.addEventListener('click', function() {
+                teamFilters.forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+                
+                const team = this.dataset.team;
+                
+                // Pertama, sembunyikan semua anggota
+                teamMembers.forEach(member => member.classList.remove('active'));
+                
+                if (team === 'all') {
+                    // Untuk filter 'All', tampilkan setiap nama hanya sekali
+                    const uniqueNames = new Set();
+                    
+                    allMembers.forEach(member => {
+                        const name = member.querySelector('.team-member-name').textContent;
+                        if (!uniqueNames.has(name)) {
+                            member.classList.add('active');
+                            uniqueNames.add(name);
+                        }
+                    });
+                } else if (team === 'Team Leads') {
+                    // Untuk Team Leads, tampilkan nama unik (prioritaskan level=2)
+                    const membersByName = {};
+                    
+                    allMembers.forEach(member => {
+                        const name = member.querySelector('.team-member-name').textContent;
+                        const isTeamLead = member.dataset.level === '2';
+                        
+                        // Jika belum ada di daftar, atau yang sekarang adalah Team Lead (level=2)
+                        if (!membersByName[name] || isTeamLead) {
+                            membersByName[name] = member;
+                        }
+                    });
+                    
+                    // Tampilkan hanya yang level=2 (Team Leads)
+                    Object.values(membersByName).forEach(member => {
+                        if (member.dataset.level === '2') {
+                            member.classList.add('active');
+                        }
+                    });
+                } else {
+                    // Untuk divisi lainnya, tampilkan semua yang sesuai
+                    allMembers.forEach(member => {
+                        if (member.dataset.team === team) {
+                            member.classList.add('active');
+                        }
+                    });
+                }
+            });
+            });
+
+            // Aktifkan filter 'All' secara default saat load halaman
+            document.querySelector('.team-filter[data-team="all"]').click();
+
+            // Initialize image slider
+            initImageSlider();
+        });
+
+        function initImageSlider() {
+            const images = document.querySelectorAll('.image-slider .full-width-image');
+            let currentIndex = 0;
+            const slideInterval = 3000; // 5 seconds
+            
+            // Set initial classes
+            images.forEach((img, index) => {
+                if (index === 0) {
+                    img.classList.add('active');
+                    img.classList.remove('next', 'prev');
+                } else {
+                    img.classList.add('next');
+                    img.classList.remove('active', 'prev');
+                }
+            });
+            
+            function slideToNext() {
+                const nextIndex = (currentIndex + 1) % images.length;
+                slideTo(nextIndex);
+            }
+            
+            function slideTo(newIndex) {
+                // Skip if trying to slide to same image
+                if (newIndex === currentIndex) return;
+                
+                const currentImage = images[currentIndex];
+                const newImage = images[newIndex];
+                
+                // Set direction classes
+                currentImage.classList.remove('active');
+                currentImage.classList.add('prev');
+                
+                newImage.classList.remove('next', 'prev');
+                newImage.classList.add('active');
+                
+                // Update current index
+                currentIndex = newIndex;
+                
+                // Prepare next image
+                const nextIndex = (currentIndex + 1) % images.length;
+                images[nextIndex].classList.remove('prev', 'active');
+                images[nextIndex].classList.add('next');
+            }
+            
+            // Start auto-sliding
+            let slideTimer = setInterval(slideToNext, slideInterval);
+            
+            // Pause on hover (optional)
+            const slider = document.querySelector('.image-slider');
+            slider.addEventListener('mouseenter', () => {
+                clearInterval(slideTimer);
+            });
+            
+            slider.addEventListener('mouseleave', () => {
+                slideTimer = setInterval(slideToNext, slideInterval);
+            });
+        }
+    </script>
+    <script>
+    // Track scroll depth
+    document.addEventListener('DOMContentLoaded', function() {
+      const scrollDepthThresholds = [25, 50, 75, 100];
+      let trackedThresholds = [];
+      
+      window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY || window.pageYOffset;
+        const pageHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercentage = Math.round((scrollPosition / pageHeight) * 100);
+        
+        scrollDepthThresholds.forEach(threshold => {
+          if (scrollPercentage >= threshold && !trackedThresholds.includes(threshold)) {
+            trackedThresholds.push(threshold);
+            gtag('event', 'scroll_depth', {
+              'event_category': 'Engagement',
+              'event_label': 'Home Page',
+              'value': threshold
+            });
+          }
+        });
+      });
+      
+      // Track time on page
+      let startTime = new Date();
+      window.addEventListener('beforeunload', function() {
+        const endTime = new Date();
+        const timeSpent = Math.round((endTime - startTime) / 1000); // in seconds
+        
+        gtag('event', 'time_spent', {
+          'event_category': 'Engagement',
+          'event_label': 'Home Page',
+          'value': timeSpent
+        });
+      });
+    });
+    </script>
+    <script src="{{ url_for('static', filename='js/transisi.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Carstensz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link href="https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro" rel="stylesheet">
+  <style>
+      @import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
+      </style>
+  <style>
+    :root {
+      --primary: #238CCE;
+      --dark: #151515;
+      --light: #F4F4F4;
+      --text-light: rgba(255, 255, 255, 0.6);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Neue Haas Grotesk Display Pro', 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--light);
+      overflow-x: hidden;
+    }
+    
+    /* Navbar Container */
+    #navbar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 180px 5% 100px;
+      text-align: center;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .hero h1 {
+      font-size: clamp(48px, 8vw, 110px);
+      font-weight: 500;
+      line-height: 1;
+      margin-bottom: 30px;
+    }
+    
+    /* Contact Section */
+    .contact-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      padding: 80px 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .contact-info {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .contact-info h2 {
+      font-size: clamp(32px, 5vw, 42px);
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+    
+    .contact-info p {
+      font-size: clamp(16px, 2vw, 22px);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+    
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    
+    .detail-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--primary); /* Warna biru */
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px; /* Untuk alignment yang lebih baik */
+  }
+    
+    .detail-text {
+      font-size: clamp(16px, 2vw, 20px);
+      line-height: 1.5;
+    }
+    
+    .contact-form {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      color: var(--dark);
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary);
+      text-transform: capitalize;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid #EBEAED;
+      border-radius: 100px;
+      font-size: 18px;
+      font-family: inherit;
+    }
+    
+    textarea.form-control {
+      border-radius: 10px;
+      min-height: 140px;
+      resize: vertical;
+    }
+    
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 100px;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-submit:hover {
+      opacity: 0.9;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .social-icon {
+      color: white;
+      font-size: 20px;
+      transition: color 0.3s ease;
+    }
+    
+    .social-icon:hover {
+      color: var(--primary);
+    }
+    
+    .copyright {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 16px;
+      opacity: 0.8;
+    }
+
+    #formResponse i {
+      margin-right: 10px;
+    }
+
+    /* Style untuk small text di bawah input WhatsApp */
+    .contact-form small {
+      display: block;
+      margin-top: 5px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Style untuk input nomor WhatsApp */
+    #whatsapp {
+      margin-bottom: 5px;
+    }
+
+    /* Animasi untuk response message */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #formResponse {
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .contact-container {
+        gap: 60px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero {
+        padding: 150px 5% 80px;
+      }
+      
+      .contact-form {
+        padding: 30px;
+      }
+      
+      .footer-links, .footer-social {
+        justify-content: flex-start;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero {
+        padding: 120px 5% 60px;
+      }
+      
+      .form-control {
+        padding: 12px 15px;
+      }
+      
+      .btn-submit {
+        width: 100%;
+      }
+    }
+      /* Transition overlay */
+    .page-transition {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #238CCE;
+        z-index: 9999;
+        transform: scaleY(0);
+        transform-origin: bottom;
+        transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    
+    .page-transition.active {
+        transform: scaleY(1);
+        transform-origin: top;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar will be inserted here -->
+  <div id="navbar-container"></div>
+  {% include "includes/navbar.html" %}
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Contact Us</h1>
+  </section>
+
+  <!-- Contact Section -->
+  <div class="contact-container">
+    <div class="contact-info">
+      <h2>Let's Keep in Touch</h2>
+      <p>We have created a new product that will help designers, developers and companies create websites for their startups quickly and easily.</p>
+      
+      <h2>Contact Details:</h2>
+      <div class="contact-details">
+        <div class="detail-item">
+          <i class="fa fa-phone detail-icon"></i>
+          <div class="detail-text">+62 822 2988 0990</div>
+        </div>
+        <div class="detail-item">
+          <i class="fa fa-envelope detail-icon"></i>
+          <div class="detail-text">carstensz@pusdeham.com</div>
+        </div>
+        <div class="detail-item">
+          <i class="fa fa-map-marker detail-icon"></i>
+          <div class="detail-text">
+            Jalan Ketintang Baru Selatan 1,<br>
+            Ruko KJS Park - Nomor 45
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <form class="contact-form" id="contactForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" class="form-control" placeholder="Full Name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" placeholder="name@mail.com" required>
+      </div>
+      
+      <!-- Tambahkan field WhatsApp Number di sini -->
+      <div class="form-group">
+        <label for="whatsapp">WhatsApp Number</label>
+        <input type="tel" id="whatsapp" class="form-control" placeholder="6281234567890" required>
+        <small style="color: #666; font-size: 14px;">Format: 6281234567890 (tanpa + atau spasi)</small>
+      </div>
+      
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" class="form-control" placeholder="Request Pricelist" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" class="form-control" placeholder="Your message" required></textarea>
+      </div>
+      
+      <button type="submit" class="btn-submit" id="submitBtn">Send</button>
+    </form>
+    
+    <div id="formResponse" style="display: none; margin-top: 20px; padding: 15px; border-radius: 5px;"></div>
+  </div>
+  <footer id="footer-container"></footer>
+  <div class="page-transition"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formResponse = document.getElementById('formResponse');
+
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const whatsapp = document.getElementById('whatsapp').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
+        
+        if (!/^[0-9]{10,15}$/.test(whatsapp)) {
+            showResponse('Error: Please enter a valid WhatsApp number (10-15 digits, no symbols)', false);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send';
+            return;
+        }
+        
+        // Pesan untuk user (TIDAK DIUBAH)
+        const userWhatsappMessage = `Thank you ${name} for reaching out to CIM,\n\n` +
+                                `We have received your inquiry for:\n` +
+                                `*${subject}*\n\n` +
+                                `About:\n` +
+                                `${message}\n\n` +
+                                `Our admin will reach out to you soon.\n` +
+                                `Thank you for your patience.`;
+      
+        // Pesan untuk admin (TIDAK DIUBAH)
+        const adminWhatsappMessage = `*New Contact Form Submission*\n\n` +
+                                `*Name:* ${name}\n` +
+                                `*Email:* ${email}\n` +
+                                `*WhatsApp:* ${whatsapp}\n` +
+                                `*Subject:* ${subject}\n` +
+                                `*Message:* ${message}`;
+
+        try {
+            // 1. Kirim ke user - HANYA URL YANG DIUBAH
+            const userResponse = await fetch('http://36.95.163.131:3000/api/sendText', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chatId: `${whatsapp}@c.us`,
+                    text: userWhatsappMessage,
+                    session: "default"
+                })
+            });
+            
+            // 2. Kirim ke admin - HANYA URL YANG DIUBAH
+            const adminResponse = await fetch('http://36.95.163.131:3000/api/sendText', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chatId: "6285156748140@c.us",
+                    text: adminWhatsappMessage,
+                    session: "default"
+                })
+            });
+            
+            if (userResponse.ok && adminResponse.ok) {
+                showResponse('<i class="fa fa-check-circle"></i> Thank you! Your message has been sent successfully. We have sent a confirmation to your WhatsApp.', true);
+                contactForm.reset();
+            } else {
+                throw new Error('Failed to send message');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showResponse(`<i class="fa fa-exclamation-circle"></i> Error: ${error.message}`, false);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send';
+        }
+    });
+
+    function showResponse(message, isSuccess) {
+        formResponse.style.display = 'block';
+        formResponse.style.backgroundColor = isSuccess ? '#d4edda' : '#f8d7da';
+        formResponse.style.color = isSuccess ? '#155724' : '#721c24';
+        formResponse.innerHTML = message;
+        
+        setTimeout(() => {
+            formResponse.style.display = 'none';
+        }, 5000);
+    }
+    });
+
+    // Load navbar
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      function initNavbar() {
+        // Highlight current page
+        const currentPage = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-link').forEach(link => {
+          if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+          }
+        });
+        
+        // Mobile menu toggle
+        const mobileBtn = document.querySelector('.mobile-menu-btn');
+        if (mobileBtn) {
+          mobileBtn.addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+            document.querySelector('.nav-right').classList.toggle('active');
+          });
+        }
+      }
+    });
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar-container');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+    {% include "includes/footer.html" %}
+    <script src="{{ url_for('static', filename='js/transisi.js') }}"></script>
+</body>
+</html>
